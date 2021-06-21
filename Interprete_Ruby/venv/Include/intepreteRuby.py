@@ -1,10 +1,21 @@
 import ply.lex as lex
 
 reserved = {
+    'puts': 'PUTS',
+    'print': 'PRINT',
+    'gets': 'GETS',
     'if': 'IF',
-    'then': 'THEN',
     'else': 'ELSE',
+    'elsif': 'ELSIF',
     'while': 'WHILE',
+    'for': 'FOR',
+    'end': 'END',
+    'true': 'TRUE',
+    'false': 'FALSE',
+    'and': 'AND',
+    'or': 'OR',
+    'not': 'NOT',
+    'break': 'BREAK'
 }
 tokens = (
     'NUMBER',
