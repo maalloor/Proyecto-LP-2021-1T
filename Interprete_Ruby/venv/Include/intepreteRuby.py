@@ -17,6 +17,12 @@ reserved = {
     'not': 'NOT',
     'break': 'BREAK'
 }
+symbols = {
+    '@': 'AT',
+    '#': 'HASH',
+    '=': 'EQUAL',
+    '$': 'DOLLAR'
+}
 tokens = (
     'NUMBER',
     'PLUS',
@@ -25,9 +31,9 @@ tokens = (
     'DIVIDE',
     'LPAREN',
     'RPAREN',
-    "MOD",
-    "ID"
-) + tuple(reserved.values())
+    'MOD',
+    'ID',
+) + tuple(reserved.values()) + tuple(symbols.values())
 # Regular expression rules for simple tokens
 t_PLUS = r'\+'
 t_MINUS = r'-'
@@ -36,10 +42,19 @@ t_DIVIDE = r'/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_MOD = r'%'
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value, 'ID')  # Check for reserved words
     return t
+
+def t_SYMBOL(t):
+    r'\W'
+    t.type = symbols.get(t.value, 'ID')
+    if t.type in symbols.values():
+        return t
+    else:
+        t_error(t)
 # A regular expression rule with some action code
 def t_NUMBER(t):
     r'\d+'
