@@ -27,23 +27,24 @@ symbols = {
     '<': 'LESS',
     '!': 'EXCLAMATION',
     '"': 'DQUOTE',
-    "'": 'SQUOTE'
+    "'": 'SQUOTE',
+    '+': 'ADD',
+    '-': 'SUBSTRACT',
+    '*': 'MULTIPLY',
+    '/': 'DIVIDE',
+    '(': 'LPAREN',
+    ')': 'RPAREN',
+    '[': 'LBRACKET',
+    ']': 'RBRACKET',
+    '%': 'MODULUS'
 }
 tokens = (
     'INTEGER',
     'STRING',
     'FLOAT',
-    'ADD',
-    'SUBTRACT',
-    'MULTIPLY',
-    'DIVIDE',
-    'LPAREN',
-    'RPAREN',
-    'LBRACKET',
-    'RBRACKET',
-    'MODULUS',
 ) + tuple(reserved.values()) + tuple(symbols.values())
 # Regular expression rules for simple tokens
+"""
 t_ADD = r'\+'
 t_SUBTRACT = r'-'
 t_MULTIPLY = r'\*'
@@ -53,9 +54,10 @@ t_RPAREN = r'\)'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_MODULUS = r'%'
-
+t_USCORE = r'\_'
+"""
 def t_STRING(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    r'[A-z]+'
     t.type = reserved.get(t.value, 'STRING')
     return t
 
