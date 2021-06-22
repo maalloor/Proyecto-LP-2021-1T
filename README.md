@@ -19,3 +19,9 @@ A continuación, se procede a detallar los aportes realizados por *Manuel Loor M
 -   t_FLOAT (valida números decimales)
 -   t_SYMBOLS (valida símbolos o carácteres especiales)
 
+A continuación, se procede a detallar los aportes realizados por *David Alarcon Galeas*:
+
+- Adicion al diccionario /*reserved*/ de las palabras reservadas escogidas para ser válidadas por el Analizador Léxico, tales como: in, do, then, class, alias, begin, def.
+- Se desplazo ademas, del diccionario de tokens simples al diccionario de símbolos para una mejor distribución:
+- Se removieron del diccionario /*tokens*/ LBRACKET/RBRACKET ([]), lPAREN/RPAREN (), MODULUS (%), ADD (+), SUBSTRACT (-), MULTIPLY (*), DIVIDE (/). Y Además se adiccionó los tokens respectivos de cada símbolo o carácter especial al diccionario de Tokens.
+- - Se añadieron al diccionario /*symbols*/ los caracteres: [,],(,),%,+,-,*,/
