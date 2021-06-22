@@ -16,7 +16,14 @@ reserved = {
     'or': 'OR',
     'not': 'NOT',
     'break': 'BREAK',
-    'nil': 'NIL'
+    'nil': 'NIL',
+    'in': 'IN',
+    'do':'DO',
+    'then': 'THEN',
+    'class': 'CLASS',
+    'alias': 'ALIAS',
+    'begin':'BEGIN',
+    'def': 'DEF'
 }
 symbols = {
     '@': 'AT',
