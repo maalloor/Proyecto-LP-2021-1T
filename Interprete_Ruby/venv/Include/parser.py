@@ -1,39 +1,56 @@
 import ply.yacc as yacc
-from lexer import tokens, lexer
+from lexer import tokens
 
-def p_cuerpo(p):
-    """cuerpo : expression
-             | impresion
-             | sentencia """
-def p_impresion(p):
-    '''impresion : PRINT LPAREN expression RPAREN
-                    | PRINT LPAREN RPAREN'''
-def p_expression_plus(p):
-    'expression : expression MAS term'
-def p_expression_minus(p):
-    'expression : expression MINUS term'
+def p_instruction(p):
+    """instruction : imprint
+                    | expression
+                    | sentence"""
 
-def p_expression_term(p):
-    'expression : term'
-def p_term_times(p):
-    'term : term TIMES factor'
-def p_term_div(p):
-    'term : term DIVIDE factor'
-def p_term_mod(p):
-    'term : term MOD factor'
-def p_term_factor(p):
-    'term : factor'
-def p_sentencia_if(p):
-    'sentencia : IF factor comparacion factor LKEY cuerpo RKEY'
-def p_comparacion(p):
-    '''comparacion : MAYOR
-                    | MAYORIGUAL'''
-def p_factor_num(p):
-    'factor : NUMBER'
-def p_factor_id(p):
-    'factor : ID'
-def p_factor_expr(p):
-    'factor : LPAREN expression RPAREN'
+def p_imprint(p):
+    """imprint : PRINT expression
+                | PUTS expression"""
+
+def p_expression(p):
+    """expression : expression ADD term
+                    | expression SUBSTRACT term
+                    | term"""
+def p_term(p):
+    """term : term MULTIPLY factor
+            | term DIVIDE factor
+            | factor"""
+
+def p_sentence_while(p):
+    """sentence : WHILE comparison DO instruction END
+                | WHILE comparison OR comparison DO instruction END
+                | WHILE comparison AND comparison DO instruction END"""
+
+def p_sentence_for(p):
+    'sentence : FOR ID IN RANGE instruction END'
+
+def p_sentence_if(p):
+    """sentence : IF comparison instruction END
+                | IF comparison OR comparison instruction END
+                | IF comparison AND comparison instruction END
+                | IF comparison instruction ELSE instruction END
+                | IF comparison instruction ELSIF instruction ELSE instruction END"""
+
+def p_comparison(p):
+    """comparison : factor EQUALS factor
+                    | factor DIFFERENT factor
+                    | factor LESS factor
+                    | factor GREATER factor"""
+
+def p_factor(p):
+    """factor : INTEGER
+                | FLOAT
+                | STRING
+                | ID
+                | GLOBALID
+                | INSTANCEID"""
+
+#Aquí debería ir comparison
+
+
 # Error rule for syntax errors
 def p_error(p):
     if p:
@@ -41,11 +58,13 @@ def p_error(p):
         # Just discard the token and tell the parser it's okay.
     else:
         print("Syntax error at EOF")
+
 # Build the parser
 parser = yacc.yacc()
+
 while True:
     try:
-        s = input('calc > ')
+        s = input('parser > ')
     except EOFError:
         break
     if not s: continue

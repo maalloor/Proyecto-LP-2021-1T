@@ -26,27 +26,6 @@ reserved = {
     'def': 'DEF'
 }
 
-symbols = {
-    '@': 'AT',
-    '#': 'HASH',
-    '=': 'EQUAL',
-    '$': 'DOLLAR',
-    '>': 'GREATER',
-    '<': 'LESS',
-    '!': 'EXCLAMATION',
-    '"': 'DQUOTE',
-    "'": 'SQUOTE',
-    '+': 'ADD',
-    '-': 'SUBSTRACT',
-    '*': 'MULTIPLY',
-    '/': 'DIVIDE',
-    '(': 'LPAREN',
-    ')': 'RPAREN',
-    '[': 'LBRACKET',
-    ']': 'RBRACKET',
-    '%': 'MODULUS'
-}
-
 #Manuel: Se definió nuevos tokens
 tokens = (
     'INTEGER',
@@ -56,7 +35,7 @@ tokens = (
     'GLOBALID',
     'INSTANCEID',
     'ADD',
-    'SUBTRACT',
+    'SUBSTRACT',
     'MULTIPLY',
     'DIVIDE',
     'MODULUS',
@@ -73,12 +52,14 @@ tokens = (
     'ASSIGMENT',
     'EQUALS',
     'COMMENT',
-    'BLOCKCOMMENT'
+    'BLOCKCOMMENT',
+    'DOT',
+    'RANGE'
 ) + tuple(reserved.values())
 
 # Manuel: Se definió nuevas expresiones regulares para tokens simples
 t_ADD = r'\+'
-t_SUBTRACT = r'-'
+t_SUBSTRACT = r'-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'/'
 t_MODULUS = r'%'
@@ -94,7 +75,7 @@ t_APOST = r"\'"
 t_DQUOTE = r'\"'
 t_ASSIGMENT = r'='
 t_EQUALS = r'=='
-
+t_DOT = r'\.'
 def t_ID(t):
     r'[a-zA-Z_]\w*'
     t.type = reserved.get(t.value, 'ID')
@@ -129,6 +110,10 @@ def t_COMMENT(t):
 
 def t_BLOCKCOMMENT(t):
     r'=begin(.|\n)*=end'
+    return t
+
+def t_RANGE(t):
+    r'\d\.\.\d+'
     return t
 
 #Definición y conteo del número de línea

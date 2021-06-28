@@ -1,0 +1,1689 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ALIAS
+    APOST
+    ASSIGMENT
+    BEGIN
+    BLOCKCOMMENT
+    BREAK
+    CLASS
+    COMMA
+    COMMENT
+    DEF
+    DOT
+    DQUOTE
+    FALSE
+    GETS
+    LBRACKET
+    LPAREN
+    MODULUS
+    NIL
+    NOT
+    RBRACKET
+    RPAREN
+    THEN
+    TRUE
+
+Grammar
+
+Rule 0     S' -> instruction
+Rule 1     instruction -> imprint
+Rule 2     instruction -> expression
+Rule 3     instruction -> sentence
+Rule 4     imprint -> PRINT expression
+Rule 5     imprint -> PUTS expression
+Rule 6     expression -> expression ADD term
+Rule 7     expression -> expression SUBSTRACT term
+Rule 8     expression -> term
+Rule 9     term -> term MULTIPLY factor
+Rule 10    term -> term DIVIDE factor
+Rule 11    term -> factor
+Rule 12    sentence -> WHILE comparison DO instruction END
+Rule 13    sentence -> WHILE comparison OR comparison DO instruction END
+Rule 14    sentence -> WHILE comparison AND comparison DO instruction END
+Rule 15    sentence -> FOR ID IN RANGE instruction END
+Rule 16    sentence -> IF comparison instruction END
+Rule 17    sentence -> IF comparison OR comparison instruction END
+Rule 18    sentence -> IF comparison AND comparison instruction END
+Rule 19    sentence -> IF comparison instruction ELSE instruction END
+Rule 20    sentence -> IF comparison instruction ELSIF instruction ELSE instruction END
+Rule 21    comparison -> factor EQUALS factor
+Rule 22    comparison -> factor DIFFERENT factor
+Rule 23    comparison -> factor LESS factor
+Rule 24    comparison -> factor GREATER factor
+Rule 25    factor -> INTEGER
+Rule 26    factor -> FLOAT
+Rule 27    factor -> STRING
+Rule 28    factor -> ID
+Rule 29    factor -> GLOBALID
+Rule 30    factor -> INSTANCEID
+
+Terminals, with rules where they appear
+
+ADD                  : 6
+ALIAS                : 
+AND                  : 14 18
+APOST                : 
+ASSIGMENT            : 
+BEGIN                : 
+BLOCKCOMMENT         : 
+BREAK                : 
+CLASS                : 
+COMMA                : 
+COMMENT              : 
+DEF                  : 
+DIFFERENT            : 22
+DIVIDE               : 10
+DO                   : 12 13 14
+DOT                  : 
+DQUOTE               : 
+ELSE                 : 19 20
+ELSIF                : 20
+END                  : 12 13 14 15 16 17 18 19 20
+EQUALS               : 21
+FALSE                : 
+FLOAT                : 26
+FOR                  : 15
+GETS                 : 
+GLOBALID             : 29
+GREATER              : 24
+ID                   : 15 28
+IF                   : 16 17 18 19 20
+IN                   : 15
+INSTANCEID           : 30
+INTEGER              : 25
+LBRACKET             : 
+LESS                 : 23
+LPAREN               : 
+MODULUS              : 
+MULTIPLY             : 9
+NIL                  : 
+NOT                  : 
+OR                   : 13 17
+PRINT                : 4
+PUTS                 : 5
+RANGE                : 15
+RBRACKET             : 
+RPAREN               : 
+STRING               : 27
+SUBSTRACT            : 7
+THEN                 : 
+TRUE                 : 
+WHILE                : 12 13 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+comparison           : 12 13 13 14 14 16 17 17 18 18 19 20
+expression           : 2 4 5 6 7
+factor               : 9 10 11 21 21 22 22 23 23 24 24
+imprint              : 1
+instruction          : 12 13 14 15 16 17 18 19 19 20 20 20 0
+sentence             : 3
+term                 : 6 7 8 9 10
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . instruction
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 1
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 1
+
+    (0) S' -> instruction .
+
+
+
+state 2
+
+    (1) instruction -> imprint .
+
+    $end            reduce using rule 1 (instruction -> imprint .)
+    END             reduce using rule 1 (instruction -> imprint .)
+    ELSE            reduce using rule 1 (instruction -> imprint .)
+    ELSIF           reduce using rule 1 (instruction -> imprint .)
+
+
+state 3
+
+    (2) instruction -> expression .
+    (6) expression -> expression . ADD term
+    (7) expression -> expression . SUBSTRACT term
+
+    $end            reduce using rule 2 (instruction -> expression .)
+    END             reduce using rule 2 (instruction -> expression .)
+    ELSE            reduce using rule 2 (instruction -> expression .)
+    ELSIF           reduce using rule 2 (instruction -> expression .)
+    ADD             shift and go to state 18
+    SUBSTRACT       shift and go to state 19
+
+
+state 4
+
+    (3) instruction -> sentence .
+
+    $end            reduce using rule 3 (instruction -> sentence .)
+    END             reduce using rule 3 (instruction -> sentence .)
+    ELSE            reduce using rule 3 (instruction -> sentence .)
+    ELSIF           reduce using rule 3 (instruction -> sentence .)
+
+
+state 5
+
+    (4) imprint -> PRINT . expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    expression                     shift and go to state 20
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 6
+
+    (5) imprint -> PUTS . expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    expression                     shift and go to state 21
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 7
+
+    (8) expression -> term .
+    (9) term -> term . MULTIPLY factor
+    (10) term -> term . DIVIDE factor
+
+    ADD             reduce using rule 8 (expression -> term .)
+    SUBSTRACT       reduce using rule 8 (expression -> term .)
+    $end            reduce using rule 8 (expression -> term .)
+    END             reduce using rule 8 (expression -> term .)
+    ELSE            reduce using rule 8 (expression -> term .)
+    ELSIF           reduce using rule 8 (expression -> term .)
+    MULTIPLY        shift and go to state 22
+    DIVIDE          shift and go to state 23
+
+
+state 8
+
+    (12) sentence -> WHILE . comparison DO instruction END
+    (13) sentence -> WHILE . comparison OR comparison DO instruction END
+    (14) sentence -> WHILE . comparison AND comparison DO instruction END
+    (21) comparison -> . factor EQUALS factor
+    (22) comparison -> . factor DIFFERENT factor
+    (23) comparison -> . factor LESS factor
+    (24) comparison -> . factor GREATER factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    comparison                     shift and go to state 24
+    factor                         shift and go to state 25
+
+state 9
+
+    (15) sentence -> FOR . ID IN RANGE instruction END
+
+    ID              shift and go to state 26
+
+
+state 10
+
+    (28) factor -> ID .
+
+    MULTIPLY        reduce using rule 28 (factor -> ID .)
+    DIVIDE          reduce using rule 28 (factor -> ID .)
+    ADD             reduce using rule 28 (factor -> ID .)
+    SUBSTRACT       reduce using rule 28 (factor -> ID .)
+    $end            reduce using rule 28 (factor -> ID .)
+    END             reduce using rule 28 (factor -> ID .)
+    ELSE            reduce using rule 28 (factor -> ID .)
+    ELSIF           reduce using rule 28 (factor -> ID .)
+    EQUALS          reduce using rule 28 (factor -> ID .)
+    DIFFERENT       reduce using rule 28 (factor -> ID .)
+    LESS            reduce using rule 28 (factor -> ID .)
+    GREATER         reduce using rule 28 (factor -> ID .)
+    DO              reduce using rule 28 (factor -> ID .)
+    OR              reduce using rule 28 (factor -> ID .)
+    AND             reduce using rule 28 (factor -> ID .)
+    PRINT           reduce using rule 28 (factor -> ID .)
+    PUTS            reduce using rule 28 (factor -> ID .)
+    WHILE           reduce using rule 28 (factor -> ID .)
+    FOR             reduce using rule 28 (factor -> ID .)
+    IF              reduce using rule 28 (factor -> ID .)
+    INTEGER         reduce using rule 28 (factor -> ID .)
+    FLOAT           reduce using rule 28 (factor -> ID .)
+    STRING          reduce using rule 28 (factor -> ID .)
+    ID              reduce using rule 28 (factor -> ID .)
+    GLOBALID        reduce using rule 28 (factor -> ID .)
+    INSTANCEID      reduce using rule 28 (factor -> ID .)
+
+
+state 11
+
+    (16) sentence -> IF . comparison instruction END
+    (17) sentence -> IF . comparison OR comparison instruction END
+    (18) sentence -> IF . comparison AND comparison instruction END
+    (19) sentence -> IF . comparison instruction ELSE instruction END
+    (20) sentence -> IF . comparison instruction ELSIF instruction ELSE instruction END
+    (21) comparison -> . factor EQUALS factor
+    (22) comparison -> . factor DIFFERENT factor
+    (23) comparison -> . factor LESS factor
+    (24) comparison -> . factor GREATER factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    comparison                     shift and go to state 27
+    factor                         shift and go to state 25
+
+state 12
+
+    (11) term -> factor .
+
+    MULTIPLY        reduce using rule 11 (term -> factor .)
+    DIVIDE          reduce using rule 11 (term -> factor .)
+    ADD             reduce using rule 11 (term -> factor .)
+    SUBSTRACT       reduce using rule 11 (term -> factor .)
+    $end            reduce using rule 11 (term -> factor .)
+    END             reduce using rule 11 (term -> factor .)
+    ELSE            reduce using rule 11 (term -> factor .)
+    ELSIF           reduce using rule 11 (term -> factor .)
+
+
+state 13
+
+    (25) factor -> INTEGER .
+
+    MULTIPLY        reduce using rule 25 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 25 (factor -> INTEGER .)
+    ADD             reduce using rule 25 (factor -> INTEGER .)
+    SUBSTRACT       reduce using rule 25 (factor -> INTEGER .)
+    $end            reduce using rule 25 (factor -> INTEGER .)
+    END             reduce using rule 25 (factor -> INTEGER .)
+    ELSE            reduce using rule 25 (factor -> INTEGER .)
+    ELSIF           reduce using rule 25 (factor -> INTEGER .)
+    EQUALS          reduce using rule 25 (factor -> INTEGER .)
+    DIFFERENT       reduce using rule 25 (factor -> INTEGER .)
+    LESS            reduce using rule 25 (factor -> INTEGER .)
+    GREATER         reduce using rule 25 (factor -> INTEGER .)
+    DO              reduce using rule 25 (factor -> INTEGER .)
+    OR              reduce using rule 25 (factor -> INTEGER .)
+    AND             reduce using rule 25 (factor -> INTEGER .)
+    PRINT           reduce using rule 25 (factor -> INTEGER .)
+    PUTS            reduce using rule 25 (factor -> INTEGER .)
+    WHILE           reduce using rule 25 (factor -> INTEGER .)
+    FOR             reduce using rule 25 (factor -> INTEGER .)
+    IF              reduce using rule 25 (factor -> INTEGER .)
+    INTEGER         reduce using rule 25 (factor -> INTEGER .)
+    FLOAT           reduce using rule 25 (factor -> INTEGER .)
+    STRING          reduce using rule 25 (factor -> INTEGER .)
+    ID              reduce using rule 25 (factor -> INTEGER .)
+    GLOBALID        reduce using rule 25 (factor -> INTEGER .)
+    INSTANCEID      reduce using rule 25 (factor -> INTEGER .)
+
+
+state 14
+
+    (26) factor -> FLOAT .
+
+    MULTIPLY        reduce using rule 26 (factor -> FLOAT .)
+    DIVIDE          reduce using rule 26 (factor -> FLOAT .)
+    ADD             reduce using rule 26 (factor -> FLOAT .)
+    SUBSTRACT       reduce using rule 26 (factor -> FLOAT .)
+    $end            reduce using rule 26 (factor -> FLOAT .)
+    END             reduce using rule 26 (factor -> FLOAT .)
+    ELSE            reduce using rule 26 (factor -> FLOAT .)
+    ELSIF           reduce using rule 26 (factor -> FLOAT .)
+    EQUALS          reduce using rule 26 (factor -> FLOAT .)
+    DIFFERENT       reduce using rule 26 (factor -> FLOAT .)
+    LESS            reduce using rule 26 (factor -> FLOAT .)
+    GREATER         reduce using rule 26 (factor -> FLOAT .)
+    DO              reduce using rule 26 (factor -> FLOAT .)
+    OR              reduce using rule 26 (factor -> FLOAT .)
+    AND             reduce using rule 26 (factor -> FLOAT .)
+    PRINT           reduce using rule 26 (factor -> FLOAT .)
+    PUTS            reduce using rule 26 (factor -> FLOAT .)
+    WHILE           reduce using rule 26 (factor -> FLOAT .)
+    FOR             reduce using rule 26 (factor -> FLOAT .)
+    IF              reduce using rule 26 (factor -> FLOAT .)
+    INTEGER         reduce using rule 26 (factor -> FLOAT .)
+    FLOAT           reduce using rule 26 (factor -> FLOAT .)
+    STRING          reduce using rule 26 (factor -> FLOAT .)
+    ID              reduce using rule 26 (factor -> FLOAT .)
+    GLOBALID        reduce using rule 26 (factor -> FLOAT .)
+    INSTANCEID      reduce using rule 26 (factor -> FLOAT .)
+
+
+state 15
+
+    (27) factor -> STRING .
+
+    MULTIPLY        reduce using rule 27 (factor -> STRING .)
+    DIVIDE          reduce using rule 27 (factor -> STRING .)
+    ADD             reduce using rule 27 (factor -> STRING .)
+    SUBSTRACT       reduce using rule 27 (factor -> STRING .)
+    $end            reduce using rule 27 (factor -> STRING .)
+    END             reduce using rule 27 (factor -> STRING .)
+    ELSE            reduce using rule 27 (factor -> STRING .)
+    ELSIF           reduce using rule 27 (factor -> STRING .)
+    EQUALS          reduce using rule 27 (factor -> STRING .)
+    DIFFERENT       reduce using rule 27 (factor -> STRING .)
+    LESS            reduce using rule 27 (factor -> STRING .)
+    GREATER         reduce using rule 27 (factor -> STRING .)
+    DO              reduce using rule 27 (factor -> STRING .)
+    OR              reduce using rule 27 (factor -> STRING .)
+    AND             reduce using rule 27 (factor -> STRING .)
+    PRINT           reduce using rule 27 (factor -> STRING .)
+    PUTS            reduce using rule 27 (factor -> STRING .)
+    WHILE           reduce using rule 27 (factor -> STRING .)
+    FOR             reduce using rule 27 (factor -> STRING .)
+    IF              reduce using rule 27 (factor -> STRING .)
+    INTEGER         reduce using rule 27 (factor -> STRING .)
+    FLOAT           reduce using rule 27 (factor -> STRING .)
+    STRING          reduce using rule 27 (factor -> STRING .)
+    ID              reduce using rule 27 (factor -> STRING .)
+    GLOBALID        reduce using rule 27 (factor -> STRING .)
+    INSTANCEID      reduce using rule 27 (factor -> STRING .)
+
+
+state 16
+
+    (29) factor -> GLOBALID .
+
+    MULTIPLY        reduce using rule 29 (factor -> GLOBALID .)
+    DIVIDE          reduce using rule 29 (factor -> GLOBALID .)
+    ADD             reduce using rule 29 (factor -> GLOBALID .)
+    SUBSTRACT       reduce using rule 29 (factor -> GLOBALID .)
+    $end            reduce using rule 29 (factor -> GLOBALID .)
+    END             reduce using rule 29 (factor -> GLOBALID .)
+    ELSE            reduce using rule 29 (factor -> GLOBALID .)
+    ELSIF           reduce using rule 29 (factor -> GLOBALID .)
+    EQUALS          reduce using rule 29 (factor -> GLOBALID .)
+    DIFFERENT       reduce using rule 29 (factor -> GLOBALID .)
+    LESS            reduce using rule 29 (factor -> GLOBALID .)
+    GREATER         reduce using rule 29 (factor -> GLOBALID .)
+    DO              reduce using rule 29 (factor -> GLOBALID .)
+    OR              reduce using rule 29 (factor -> GLOBALID .)
+    AND             reduce using rule 29 (factor -> GLOBALID .)
+    PRINT           reduce using rule 29 (factor -> GLOBALID .)
+    PUTS            reduce using rule 29 (factor -> GLOBALID .)
+    WHILE           reduce using rule 29 (factor -> GLOBALID .)
+    FOR             reduce using rule 29 (factor -> GLOBALID .)
+    IF              reduce using rule 29 (factor -> GLOBALID .)
+    INTEGER         reduce using rule 29 (factor -> GLOBALID .)
+    FLOAT           reduce using rule 29 (factor -> GLOBALID .)
+    STRING          reduce using rule 29 (factor -> GLOBALID .)
+    ID              reduce using rule 29 (factor -> GLOBALID .)
+    GLOBALID        reduce using rule 29 (factor -> GLOBALID .)
+    INSTANCEID      reduce using rule 29 (factor -> GLOBALID .)
+
+
+state 17
+
+    (30) factor -> INSTANCEID .
+
+    MULTIPLY        reduce using rule 30 (factor -> INSTANCEID .)
+    DIVIDE          reduce using rule 30 (factor -> INSTANCEID .)
+    ADD             reduce using rule 30 (factor -> INSTANCEID .)
+    SUBSTRACT       reduce using rule 30 (factor -> INSTANCEID .)
+    $end            reduce using rule 30 (factor -> INSTANCEID .)
+    END             reduce using rule 30 (factor -> INSTANCEID .)
+    ELSE            reduce using rule 30 (factor -> INSTANCEID .)
+    ELSIF           reduce using rule 30 (factor -> INSTANCEID .)
+    EQUALS          reduce using rule 30 (factor -> INSTANCEID .)
+    DIFFERENT       reduce using rule 30 (factor -> INSTANCEID .)
+    LESS            reduce using rule 30 (factor -> INSTANCEID .)
+    GREATER         reduce using rule 30 (factor -> INSTANCEID .)
+    DO              reduce using rule 30 (factor -> INSTANCEID .)
+    OR              reduce using rule 30 (factor -> INSTANCEID .)
+    AND             reduce using rule 30 (factor -> INSTANCEID .)
+    PRINT           reduce using rule 30 (factor -> INSTANCEID .)
+    PUTS            reduce using rule 30 (factor -> INSTANCEID .)
+    WHILE           reduce using rule 30 (factor -> INSTANCEID .)
+    FOR             reduce using rule 30 (factor -> INSTANCEID .)
+    IF              reduce using rule 30 (factor -> INSTANCEID .)
+    INTEGER         reduce using rule 30 (factor -> INSTANCEID .)
+    FLOAT           reduce using rule 30 (factor -> INSTANCEID .)
+    STRING          reduce using rule 30 (factor -> INSTANCEID .)
+    ID              reduce using rule 30 (factor -> INSTANCEID .)
+    GLOBALID        reduce using rule 30 (factor -> INSTANCEID .)
+    INSTANCEID      reduce using rule 30 (factor -> INSTANCEID .)
+
+
+state 18
+
+    (6) expression -> expression ADD . term
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    term                           shift and go to state 28
+    factor                         shift and go to state 12
+
+state 19
+
+    (7) expression -> expression SUBSTRACT . term
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    term                           shift and go to state 29
+    factor                         shift and go to state 12
+
+state 20
+
+    (4) imprint -> PRINT expression .
+    (6) expression -> expression . ADD term
+    (7) expression -> expression . SUBSTRACT term
+
+    $end            reduce using rule 4 (imprint -> PRINT expression .)
+    END             reduce using rule 4 (imprint -> PRINT expression .)
+    ELSE            reduce using rule 4 (imprint -> PRINT expression .)
+    ELSIF           reduce using rule 4 (imprint -> PRINT expression .)
+    ADD             shift and go to state 18
+    SUBSTRACT       shift and go to state 19
+
+
+state 21
+
+    (5) imprint -> PUTS expression .
+    (6) expression -> expression . ADD term
+    (7) expression -> expression . SUBSTRACT term
+
+    $end            reduce using rule 5 (imprint -> PUTS expression .)
+    END             reduce using rule 5 (imprint -> PUTS expression .)
+    ELSE            reduce using rule 5 (imprint -> PUTS expression .)
+    ELSIF           reduce using rule 5 (imprint -> PUTS expression .)
+    ADD             shift and go to state 18
+    SUBSTRACT       shift and go to state 19
+
+
+state 22
+
+    (9) term -> term MULTIPLY . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    factor                         shift and go to state 30
+
+state 23
+
+    (10) term -> term DIVIDE . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    factor                         shift and go to state 31
+
+state 24
+
+    (12) sentence -> WHILE comparison . DO instruction END
+    (13) sentence -> WHILE comparison . OR comparison DO instruction END
+    (14) sentence -> WHILE comparison . AND comparison DO instruction END
+
+    DO              shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+
+
+state 25
+
+    (21) comparison -> factor . EQUALS factor
+    (22) comparison -> factor . DIFFERENT factor
+    (23) comparison -> factor . LESS factor
+    (24) comparison -> factor . GREATER factor
+
+    EQUALS          shift and go to state 35
+    DIFFERENT       shift and go to state 36
+    LESS            shift and go to state 37
+    GREATER         shift and go to state 38
+
+
+state 26
+
+    (15) sentence -> FOR ID . IN RANGE instruction END
+
+    IN              shift and go to state 39
+
+
+state 27
+
+    (16) sentence -> IF comparison . instruction END
+    (17) sentence -> IF comparison . OR comparison instruction END
+    (18) sentence -> IF comparison . AND comparison instruction END
+    (19) sentence -> IF comparison . instruction ELSE instruction END
+    (20) sentence -> IF comparison . instruction ELSIF instruction ELSE instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 40
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 28
+
+    (6) expression -> expression ADD term .
+    (9) term -> term . MULTIPLY factor
+    (10) term -> term . DIVIDE factor
+
+    ADD             reduce using rule 6 (expression -> expression ADD term .)
+    SUBSTRACT       reduce using rule 6 (expression -> expression ADD term .)
+    $end            reduce using rule 6 (expression -> expression ADD term .)
+    END             reduce using rule 6 (expression -> expression ADD term .)
+    ELSE            reduce using rule 6 (expression -> expression ADD term .)
+    ELSIF           reduce using rule 6 (expression -> expression ADD term .)
+    MULTIPLY        shift and go to state 22
+    DIVIDE          shift and go to state 23
+
+
+state 29
+
+    (7) expression -> expression SUBSTRACT term .
+    (9) term -> term . MULTIPLY factor
+    (10) term -> term . DIVIDE factor
+
+    ADD             reduce using rule 7 (expression -> expression SUBSTRACT term .)
+    SUBSTRACT       reduce using rule 7 (expression -> expression SUBSTRACT term .)
+    $end            reduce using rule 7 (expression -> expression SUBSTRACT term .)
+    END             reduce using rule 7 (expression -> expression SUBSTRACT term .)
+    ELSE            reduce using rule 7 (expression -> expression SUBSTRACT term .)
+    ELSIF           reduce using rule 7 (expression -> expression SUBSTRACT term .)
+    MULTIPLY        shift and go to state 22
+    DIVIDE          shift and go to state 23
+
+
+state 30
+
+    (9) term -> term MULTIPLY factor .
+
+    MULTIPLY        reduce using rule 9 (term -> term MULTIPLY factor .)
+    DIVIDE          reduce using rule 9 (term -> term MULTIPLY factor .)
+    ADD             reduce using rule 9 (term -> term MULTIPLY factor .)
+    SUBSTRACT       reduce using rule 9 (term -> term MULTIPLY factor .)
+    $end            reduce using rule 9 (term -> term MULTIPLY factor .)
+    END             reduce using rule 9 (term -> term MULTIPLY factor .)
+    ELSE            reduce using rule 9 (term -> term MULTIPLY factor .)
+    ELSIF           reduce using rule 9 (term -> term MULTIPLY factor .)
+
+
+state 31
+
+    (10) term -> term DIVIDE factor .
+
+    MULTIPLY        reduce using rule 10 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 10 (term -> term DIVIDE factor .)
+    ADD             reduce using rule 10 (term -> term DIVIDE factor .)
+    SUBSTRACT       reduce using rule 10 (term -> term DIVIDE factor .)
+    $end            reduce using rule 10 (term -> term DIVIDE factor .)
+    END             reduce using rule 10 (term -> term DIVIDE factor .)
+    ELSE            reduce using rule 10 (term -> term DIVIDE factor .)
+    ELSIF           reduce using rule 10 (term -> term DIVIDE factor .)
+
+
+state 32
+
+    (12) sentence -> WHILE comparison DO . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 43
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 33
+
+    (13) sentence -> WHILE comparison OR . comparison DO instruction END
+    (21) comparison -> . factor EQUALS factor
+    (22) comparison -> . factor DIFFERENT factor
+    (23) comparison -> . factor LESS factor
+    (24) comparison -> . factor GREATER factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    comparison                     shift and go to state 44
+    factor                         shift and go to state 25
+
+state 34
+
+    (14) sentence -> WHILE comparison AND . comparison DO instruction END
+    (21) comparison -> . factor EQUALS factor
+    (22) comparison -> . factor DIFFERENT factor
+    (23) comparison -> . factor LESS factor
+    (24) comparison -> . factor GREATER factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    comparison                     shift and go to state 45
+    factor                         shift and go to state 25
+
+state 35
+
+    (21) comparison -> factor EQUALS . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    factor                         shift and go to state 46
+
+state 36
+
+    (22) comparison -> factor DIFFERENT . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    factor                         shift and go to state 47
+
+state 37
+
+    (23) comparison -> factor LESS . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    factor                         shift and go to state 48
+
+state 38
+
+    (24) comparison -> factor GREATER . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    factor                         shift and go to state 49
+
+state 39
+
+    (15) sentence -> FOR ID IN . RANGE instruction END
+
+    RANGE           shift and go to state 50
+
+
+state 40
+
+    (16) sentence -> IF comparison instruction . END
+    (19) sentence -> IF comparison instruction . ELSE instruction END
+    (20) sentence -> IF comparison instruction . ELSIF instruction ELSE instruction END
+
+    END             shift and go to state 51
+    ELSE            shift and go to state 52
+    ELSIF           shift and go to state 53
+
+
+state 41
+
+    (17) sentence -> IF comparison OR . comparison instruction END
+    (21) comparison -> . factor EQUALS factor
+    (22) comparison -> . factor DIFFERENT factor
+    (23) comparison -> . factor LESS factor
+    (24) comparison -> . factor GREATER factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    comparison                     shift and go to state 54
+    factor                         shift and go to state 25
+
+state 42
+
+    (18) sentence -> IF comparison AND . comparison instruction END
+    (21) comparison -> . factor EQUALS factor
+    (22) comparison -> . factor DIFFERENT factor
+    (23) comparison -> . factor LESS factor
+    (24) comparison -> . factor GREATER factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    comparison                     shift and go to state 55
+    factor                         shift and go to state 25
+
+state 43
+
+    (12) sentence -> WHILE comparison DO instruction . END
+
+    END             shift and go to state 56
+
+
+state 44
+
+    (13) sentence -> WHILE comparison OR comparison . DO instruction END
+
+    DO              shift and go to state 57
+
+
+state 45
+
+    (14) sentence -> WHILE comparison AND comparison . DO instruction END
+
+    DO              shift and go to state 58
+
+
+state 46
+
+    (21) comparison -> factor EQUALS factor .
+
+    DO              reduce using rule 21 (comparison -> factor EQUALS factor .)
+    OR              reduce using rule 21 (comparison -> factor EQUALS factor .)
+    AND             reduce using rule 21 (comparison -> factor EQUALS factor .)
+    PRINT           reduce using rule 21 (comparison -> factor EQUALS factor .)
+    PUTS            reduce using rule 21 (comparison -> factor EQUALS factor .)
+    WHILE           reduce using rule 21 (comparison -> factor EQUALS factor .)
+    FOR             reduce using rule 21 (comparison -> factor EQUALS factor .)
+    IF              reduce using rule 21 (comparison -> factor EQUALS factor .)
+    INTEGER         reduce using rule 21 (comparison -> factor EQUALS factor .)
+    FLOAT           reduce using rule 21 (comparison -> factor EQUALS factor .)
+    STRING          reduce using rule 21 (comparison -> factor EQUALS factor .)
+    ID              reduce using rule 21 (comparison -> factor EQUALS factor .)
+    GLOBALID        reduce using rule 21 (comparison -> factor EQUALS factor .)
+    INSTANCEID      reduce using rule 21 (comparison -> factor EQUALS factor .)
+
+
+state 47
+
+    (22) comparison -> factor DIFFERENT factor .
+
+    DO              reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    OR              reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    AND             reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    PRINT           reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    PUTS            reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    WHILE           reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    FOR             reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    IF              reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    INTEGER         reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    FLOAT           reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    STRING          reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    ID              reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    GLOBALID        reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+    INSTANCEID      reduce using rule 22 (comparison -> factor DIFFERENT factor .)
+
+
+state 48
+
+    (23) comparison -> factor LESS factor .
+
+    DO              reduce using rule 23 (comparison -> factor LESS factor .)
+    OR              reduce using rule 23 (comparison -> factor LESS factor .)
+    AND             reduce using rule 23 (comparison -> factor LESS factor .)
+    PRINT           reduce using rule 23 (comparison -> factor LESS factor .)
+    PUTS            reduce using rule 23 (comparison -> factor LESS factor .)
+    WHILE           reduce using rule 23 (comparison -> factor LESS factor .)
+    FOR             reduce using rule 23 (comparison -> factor LESS factor .)
+    IF              reduce using rule 23 (comparison -> factor LESS factor .)
+    INTEGER         reduce using rule 23 (comparison -> factor LESS factor .)
+    FLOAT           reduce using rule 23 (comparison -> factor LESS factor .)
+    STRING          reduce using rule 23 (comparison -> factor LESS factor .)
+    ID              reduce using rule 23 (comparison -> factor LESS factor .)
+    GLOBALID        reduce using rule 23 (comparison -> factor LESS factor .)
+    INSTANCEID      reduce using rule 23 (comparison -> factor LESS factor .)
+
+
+state 49
+
+    (24) comparison -> factor GREATER factor .
+
+    DO              reduce using rule 24 (comparison -> factor GREATER factor .)
+    OR              reduce using rule 24 (comparison -> factor GREATER factor .)
+    AND             reduce using rule 24 (comparison -> factor GREATER factor .)
+    PRINT           reduce using rule 24 (comparison -> factor GREATER factor .)
+    PUTS            reduce using rule 24 (comparison -> factor GREATER factor .)
+    WHILE           reduce using rule 24 (comparison -> factor GREATER factor .)
+    FOR             reduce using rule 24 (comparison -> factor GREATER factor .)
+    IF              reduce using rule 24 (comparison -> factor GREATER factor .)
+    INTEGER         reduce using rule 24 (comparison -> factor GREATER factor .)
+    FLOAT           reduce using rule 24 (comparison -> factor GREATER factor .)
+    STRING          reduce using rule 24 (comparison -> factor GREATER factor .)
+    ID              reduce using rule 24 (comparison -> factor GREATER factor .)
+    GLOBALID        reduce using rule 24 (comparison -> factor GREATER factor .)
+    INSTANCEID      reduce using rule 24 (comparison -> factor GREATER factor .)
+
+
+state 50
+
+    (15) sentence -> FOR ID IN RANGE . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 59
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 51
+
+    (16) sentence -> IF comparison instruction END .
+
+    $end            reduce using rule 16 (sentence -> IF comparison instruction END .)
+    END             reduce using rule 16 (sentence -> IF comparison instruction END .)
+    ELSE            reduce using rule 16 (sentence -> IF comparison instruction END .)
+    ELSIF           reduce using rule 16 (sentence -> IF comparison instruction END .)
+
+
+state 52
+
+    (19) sentence -> IF comparison instruction ELSE . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 60
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 53
+
+    (20) sentence -> IF comparison instruction ELSIF . instruction ELSE instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 61
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 54
+
+    (17) sentence -> IF comparison OR comparison . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 62
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 55
+
+    (18) sentence -> IF comparison AND comparison . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 63
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 56
+
+    (12) sentence -> WHILE comparison DO instruction END .
+
+    $end            reduce using rule 12 (sentence -> WHILE comparison DO instruction END .)
+    END             reduce using rule 12 (sentence -> WHILE comparison DO instruction END .)
+    ELSE            reduce using rule 12 (sentence -> WHILE comparison DO instruction END .)
+    ELSIF           reduce using rule 12 (sentence -> WHILE comparison DO instruction END .)
+
+
+state 57
+
+    (13) sentence -> WHILE comparison OR comparison DO . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 64
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 58
+
+    (14) sentence -> WHILE comparison AND comparison DO . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 65
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 59
+
+    (15) sentence -> FOR ID IN RANGE instruction . END
+
+    END             shift and go to state 66
+
+
+state 60
+
+    (19) sentence -> IF comparison instruction ELSE instruction . END
+
+    END             shift and go to state 67
+
+
+state 61
+
+    (20) sentence -> IF comparison instruction ELSIF instruction . ELSE instruction END
+
+    ELSE            shift and go to state 68
+
+
+state 62
+
+    (17) sentence -> IF comparison OR comparison instruction . END
+
+    END             shift and go to state 69
+
+
+state 63
+
+    (18) sentence -> IF comparison AND comparison instruction . END
+
+    END             shift and go to state 70
+
+
+state 64
+
+    (13) sentence -> WHILE comparison OR comparison DO instruction . END
+
+    END             shift and go to state 71
+
+
+state 65
+
+    (14) sentence -> WHILE comparison AND comparison DO instruction . END
+
+    END             shift and go to state 72
+
+
+state 66
+
+    (15) sentence -> FOR ID IN RANGE instruction END .
+
+    $end            reduce using rule 15 (sentence -> FOR ID IN RANGE instruction END .)
+    END             reduce using rule 15 (sentence -> FOR ID IN RANGE instruction END .)
+    ELSE            reduce using rule 15 (sentence -> FOR ID IN RANGE instruction END .)
+    ELSIF           reduce using rule 15 (sentence -> FOR ID IN RANGE instruction END .)
+
+
+state 67
+
+    (19) sentence -> IF comparison instruction ELSE instruction END .
+
+    $end            reduce using rule 19 (sentence -> IF comparison instruction ELSE instruction END .)
+    END             reduce using rule 19 (sentence -> IF comparison instruction ELSE instruction END .)
+    ELSE            reduce using rule 19 (sentence -> IF comparison instruction ELSE instruction END .)
+    ELSIF           reduce using rule 19 (sentence -> IF comparison instruction ELSE instruction END .)
+
+
+state 68
+
+    (20) sentence -> IF comparison instruction ELSIF instruction ELSE . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) imprint -> . PRINT expression
+    (5) imprint -> . PUTS expression
+    (6) expression -> . expression ADD term
+    (7) expression -> . expression SUBSTRACT term
+    (8) expression -> . term
+    (12) sentence -> . WHILE comparison DO instruction END
+    (13) sentence -> . WHILE comparison OR comparison DO instruction END
+    (14) sentence -> . WHILE comparison AND comparison DO instruction END
+    (15) sentence -> . FOR ID IN RANGE instruction END
+    (16) sentence -> . IF comparison instruction END
+    (17) sentence -> . IF comparison OR comparison instruction END
+    (18) sentence -> . IF comparison AND comparison instruction END
+    (19) sentence -> . IF comparison instruction ELSE instruction END
+    (20) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (9) term -> . term MULTIPLY factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (25) factor -> . INTEGER
+    (26) factor -> . FLOAT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . GLOBALID
+    (30) factor -> . INSTANCEID
+
+    PRINT           shift and go to state 5
+    PUTS            shift and go to state 6
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    IF              shift and go to state 11
+    INTEGER         shift and go to state 13
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 10
+    GLOBALID        shift and go to state 16
+    INSTANCEID      shift and go to state 17
+
+    instruction                    shift and go to state 73
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 12
+
+state 69
+
+    (17) sentence -> IF comparison OR comparison instruction END .
+
+    $end            reduce using rule 17 (sentence -> IF comparison OR comparison instruction END .)
+    END             reduce using rule 17 (sentence -> IF comparison OR comparison instruction END .)
+    ELSE            reduce using rule 17 (sentence -> IF comparison OR comparison instruction END .)
+    ELSIF           reduce using rule 17 (sentence -> IF comparison OR comparison instruction END .)
+
+
+state 70
+
+    (18) sentence -> IF comparison AND comparison instruction END .
+
+    $end            reduce using rule 18 (sentence -> IF comparison AND comparison instruction END .)
+    END             reduce using rule 18 (sentence -> IF comparison AND comparison instruction END .)
+    ELSE            reduce using rule 18 (sentence -> IF comparison AND comparison instruction END .)
+    ELSIF           reduce using rule 18 (sentence -> IF comparison AND comparison instruction END .)
+
+
+state 71
+
+    (13) sentence -> WHILE comparison OR comparison DO instruction END .
+
+    $end            reduce using rule 13 (sentence -> WHILE comparison OR comparison DO instruction END .)
+    END             reduce using rule 13 (sentence -> WHILE comparison OR comparison DO instruction END .)
+    ELSE            reduce using rule 13 (sentence -> WHILE comparison OR comparison DO instruction END .)
+    ELSIF           reduce using rule 13 (sentence -> WHILE comparison OR comparison DO instruction END .)
+
+
+state 72
+
+    (14) sentence -> WHILE comparison AND comparison DO instruction END .
+
+    $end            reduce using rule 14 (sentence -> WHILE comparison AND comparison DO instruction END .)
+    END             reduce using rule 14 (sentence -> WHILE comparison AND comparison DO instruction END .)
+    ELSE            reduce using rule 14 (sentence -> WHILE comparison AND comparison DO instruction END .)
+    ELSIF           reduce using rule 14 (sentence -> WHILE comparison AND comparison DO instruction END .)
+
+
+state 73
+
+    (20) sentence -> IF comparison instruction ELSIF instruction ELSE instruction . END
+
+    END             shift and go to state 74
+
+
+state 74
+
+    (20) sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .
+
+    $end            reduce using rule 20 (sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .)
+    END             reduce using rule 20 (sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .)
+    ELSE            reduce using rule 20 (sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .)
+    ELSIF           reduce using rule 20 (sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .)
+
