@@ -26,6 +26,13 @@ reserved = {
     'def': 'DEF'
 }
 
+#David: Se definio diccionario de metodos de la estructura de control
+array_methods = {
+    'length': 'LENGTH',
+    'push': 'PUSH',
+    'insert': 'INSERT'
+}
+
 #Manuel: Se definió nuevos tokens
 tokens = (
     'INTEGER',

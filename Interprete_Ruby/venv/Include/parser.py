@@ -44,15 +44,35 @@ def p_comparison(p):
                     | factor GREATER factor
                     | factor GREATEREQUAL factor
                     | factor LESSEQUAL factor"""
-#Manuel: Se definió los tipo de asignaciones mas comunes
-def p_assignment(p):
+
+
+# David: Se definió los tipo array de asignaciones mas comunes
+def p_assigment(p):
     """assignment : ID ASSIGN expression
                     | GLOBALID ASSIGN expression
-                    | INSTANCEID ASSIGN expression"""
-#Manuel: Se definió un tipo de assignacion exclusivo para la estructura de datos array
-def p_assignment_array(p):
-    'assignment : ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET'
-#Manuel: Se definió factor que incluye todos los tipos de datos
+                    | INSTANCEID ASSIGN expression
+                    | ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET"""
+
+
+# David: Se definió el formato de la declaracion de una funcion
+def p_funcion(p):
+    "assignment : DEF ID instruction END"
+
+
+# David: Se definió el metodo length de array
+def p_funcion_length(p):
+    "assignment : ID DOT LENGTH"
+
+
+# David: Se definió el metodo insert de array
+def p_funcion_insert(p):
+    "assignment : ID DOT INSERT LPAREN factor COMMA factor RPAREN"
+
+
+# David: Se definió el metodo push de array (trabaja como cola)
+def p_funcion_push(p):
+    "assignment : ID DOT PUSH LPAREN factor RPAREN"
+
 def p_factor(p):
     """factor : INTEGER
                 | FLOAT
