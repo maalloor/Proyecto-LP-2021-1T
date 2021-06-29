@@ -49,12 +49,13 @@ tokens = (
     'COMMA',
     'APOST',
     'DQUOTE',
-    'ASSIGMENT',
+    'ASSIGN',
     'EQUALS',
     'COMMENT',
     'BLOCKCOMMENT',
     'DOT',
-    'RANGE'
+    'GREATEREQUAL',
+    'LESSEQUAL'
 ) + tuple(reserved.values())
 
 # Manuel: Se definió nuevas expresiones regulares para tokens simples
@@ -73,9 +74,12 @@ t_GREATER = r'>'
 t_COMMA = r','
 t_APOST = r"\'"
 t_DQUOTE = r'\"'
-t_ASSIGMENT = r'='
+t_ASSIGN = r'='
 t_EQUALS = r'=='
 t_DOT = r'\.'
+t_GREATEREQUAL = r'>='
+t_LESSEQUAL = r'<='
+
 def t_ID(t):
     r'[a-zA-Z_]\w*'
     t.type = reserved.get(t.value, 'ID')
@@ -110,10 +114,6 @@ def t_COMMENT(t):
 
 def t_BLOCKCOMMENT(t):
     r'=begin(.|\n)*=end'
-    return t
-
-def t_RANGE(t):
-    r'\d\.\.\d+'
     return t
 
 #Definición y conteo del número de línea
