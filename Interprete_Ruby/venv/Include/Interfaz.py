@@ -1,4 +1,6 @@
 import tkinter as tk
+
+#Aporte Manuel Loor
 frame = tk.Tk()
 frame.geometry("1000x700")
 frame.title("Interpréte de Ruby")
