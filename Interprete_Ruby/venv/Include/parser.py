@@ -48,12 +48,17 @@ def p_comparison(p):
 
 
 # David: Se definió los tipo array de asignaciones mas comunes
+# David: Se definió los tipo array de asignaciones mas comunes
 def p_assigment(p):
     """assignment : ID ASSIGN expression
                     | GLOBALID ASSIGN expression
-                    | INSTANCEID ASSIGN expression
-                    | ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET"""
+                    | INSTANCEID ASSIGN expression"""
 
+#David: Se separa la declaracion de un array para asignarle sus funciones
+def p_array(p):
+   """array: array ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+          | array ASSIGN LBRACKET RBRACKET
+          | array ASSIGN QUEUE DOT NEW"""
 
 # David: Se definió el formato de la declaracion de una funcion
 def p_funcion(p):
@@ -62,17 +67,25 @@ def p_funcion(p):
 
 # David: Se definió el metodo length de array
 def p_funcion_length(p):
-    "assignment : ID DOT LENGTH"
+    "assignment : array DOT LENGTH"
 
+#David: funcion first
+def p_funcion_first(p):
+    "assignment : array DOT FIRST"
 
 # David: Se definió el metodo insert de array
 def p_funcion_insert(p):
-    "assignment : ID DOT INSERT LPAREN factor COMMA factor RPAREN"
+    """assignment : array DOT INSERT LPAREN factor COMMA factor RPAREN
+                    | array DOT INSERT LPAREN factor COMMA factor COMMA factor COMMA factor RPAREN"""
 
 
 # David: Se definió el metodo push de array (trabaja como cola)
 def p_funcion_push(p):
-    "assignment : ID DOT PUSH LPAREN factor RPAREN"
+    "assignment : array DOT PUSH LPAREN factor RPAREN"
+
+#David: funcion pop para pilas
+def p_funcion_pop(p):
+    "assignment : array DOT POP "
 
 def p_factor(p):
     """factor : INTEGER

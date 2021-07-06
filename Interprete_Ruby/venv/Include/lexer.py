@@ -23,16 +23,19 @@ reserved = {
     'alias': 'ALIAS',
     'begin':'BEGIN',
     'end': 'END',
-    'def': 'DEF'
+    'def': 'DEF',
+    'new': 'NEW',
+    'Queue': 'QUEUE'
 }
 
 #David: Se definio diccionario de metodos de la estructura de control
 array_methods = {
     'length': 'LENGTH',
     'push': 'PUSH',
-    'insert': 'INSERT'
+    'insert': 'INSERT',
+    'pop': 'POP',
+    'first': 'FIRST'
 }
-
 #Manuel: Se definió nuevos tokens
 tokens = (
     'INTEGER',
