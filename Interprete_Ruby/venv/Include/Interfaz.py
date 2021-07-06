@@ -29,7 +29,7 @@ open_file = tk.Button(frame, text="Abrir Archivo", bg='#FFF', fg='black', padx=1
 lexer = tk.Button(frame, text="Analizador Léxico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10)
 parser = tk.Button(frame, text="Analizador Sintáctico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10)
 
-open_file.place(x=260, y=560)
-lexer.place(x=450, y=600)
-parser.place(x=600, y=600)
+open_file.place(x=240, y=560)
+lexer.place(x=410, y=600)
+parser.place(x=590, y=600)
 frame.mainloop()
