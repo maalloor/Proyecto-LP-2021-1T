@@ -1,0 +1,35 @@
+import tkinter as tk
+frame = tk.Tk()
+frame.geometry("1000x700")
+frame.title("Interpréte de Ruby")
+frame.resizable(True, True)
+frame.config(bg="#000")
+
+title = tk.Label(frame, text='INTÉRPRETE DE RUBY', font="Roboto 30", fg='#2CE8FF', bg="#000",compound=tk.RIGHT)
+title.place(x=50, y=20)
+
+background_input_area = tk.Canvas(frame, width=472, height=380, bg="#000", highlightthickness=0)
+background_input = tk.PhotoImage(file="./Fondo-azul.png")
+background_input_area.create_image(245, 245, image=background_input)
+coding_input = tk.Text(frame, height=20, width=55, bg="#FFF", fg="#000", highlightthickness=0, relief='ridge', wrap="word")
+coding_input.insert(2.0, 'Ingrese en este casillero el código a analizar')
+background_input_area.place(x=60, y=130)
+coding_input.place(x=75, y=160)
+
+background_output_area = tk.Canvas(frame, width=472, height=380, bg="#000", highlightthickness=0)
+background_output_area.place(x=600, y=130)
+background_output = tk.PhotoImage(file="./Fondo-azul.png")
+background_output_area.create_image(245, 245, image=background_output)
+coding_output = tk.Text(frame, height=20, width=55, bg="#FFF", fg="#000", highlightthickness=0, relief='ridge', wrap="word")
+coding_output.insert(2.0, "-> Resultados del análisis realizado")
+coding_output.config(state="disabled")
+coding_output.place(x=615, y=160)
+
+open_file = tk.Button(frame, text="Abrir Archivo", bg='#FFF', fg='black', padx=10, pady=2)
+lexer = tk.Button(frame, text="Analizador Léxico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10)
+parser = tk.Button(frame, text="Analizador Sintáctico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10)
+
+open_file.place(x=260, y=560)
+lexer.place(x=450, y=600)
+parser.place(x=600, y=600)
+frame.mainloop()
