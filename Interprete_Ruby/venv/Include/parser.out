@@ -9,14 +9,11 @@ Unused terminals:
     BREAK
     CLASS
     COMMENT
-    DEF
     DQUOTE
     GETS
-    LPAREN
     MODULUS
     NIL
     NOT
-    RPAREN
     THEN
 
 Grammar
@@ -54,14 +51,19 @@ Rule 29    assignment -> ID ASSIGN expression
 Rule 30    assignment -> GLOBALID ASSIGN expression
 Rule 31    assignment -> INSTANCEID ASSIGN expression
 Rule 32    assignment -> ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
-Rule 33    factor -> INTEGER
-Rule 34    factor -> FLOAT
-Rule 35    factor -> STRING
-Rule 36    factor -> ID
-Rule 37    factor -> GLOBALID
-Rule 38    factor -> INSTANCEID
-Rule 39    factor -> FALSE
-Rule 40    factor -> TRUE
+Rule 33    assignment -> DEF ID instruction END
+Rule 34    assignment -> ID DOT LENGTH
+Rule 35    assignment -> ID DOT INSERT LPAREN factor COMMA factor RPAREN
+Rule 36    assignment -> ID DOT PUSH LPAREN factor RPAREN
+Rule 37    factor -> INTEGER
+Rule 38    factor -> FLOAT
+Rule 39    factor -> STRING
+Rule 40    factor -> ID
+Rule 41    factor -> GLOBALID
+Rule 42    factor -> INSTANCEID
+Rule 43    factor -> FALSE
+Rule 44    factor -> TRUE
+Rule 45    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -74,47 +76,50 @@ BEGIN                :
 BLOCKCOMMENT         : 
 BREAK                : 
 CLASS                : 
-COMMA                : 32 32 32
+COMMA                : 32 32 32 35
 COMMENT              : 
-DEF                  : 
+DEF                  : 33
 DIFFERENT            : 24
 DIVIDE               : 11
 DO                   : 13 14 15
-DOT                  : 16 16
+DOT                  : 16 16 34 35 36
 DQUOTE               : 
 ELSE                 : 21 22
 ELSIF                : 22
-END                  : 13 14 15 16 17 18 19 20 21 22
+END                  : 13 14 15 16 17 18 19 20 21 22 33
 EQUALS               : 23
-FALSE                : 39
-FLOAT                : 34
+FALSE                : 43
+FLOAT                : 38
 FOR                  : 16 17
 GETS                 : 
-GLOBALID             : 30 37
+GLOBALID             : 30 41
 GREATER              : 26
 GREATEREQUAL         : 27
-ID                   : 16 17 17 29 32 36
+ID                   : 16 17 17 29 32 33 34 35 36 40
 IF                   : 18 19 20 21 22
 IN                   : 16 17
-INSTANCEID           : 31 38
-INTEGER              : 33
+INSERT               : 35
+INSTANCEID           : 31 42
+INTEGER              : 37
 LBRACKET             : 32
+LENGTH               : 34
 LESS                 : 25
 LESSEQUAL            : 28
-LPAREN               : 
+LPAREN               : 35 36
 MODULUS              : 
 MULTIPLY             : 10
 NIL                  : 
 NOT                  : 
 OR                   : 14 19
 PRINT                : 5
+PUSH                 : 36
 PUTS                 : 6
 RBRACKET             : 32
-RPAREN               : 
-STRING               : 35
+RPAREN               : 35 36
+STRING               : 39
 SUBSTRACT            : 8
 THEN                 : 
-TRUE                 : 40
+TRUE                 : 44
 WHILE                : 13 14 15
 error                : 
 
@@ -122,10 +127,11 @@ Nonterminals, with rules where they appear
 
 assignment           : 4
 comparison           : 13 14 14 15 15 18 19 19 20 20 21 22
+empty                : 
 expression           : 2 5 6 7 8 29 30 31
-factor               : 10 11 12 16 16 23 23 24 24 25 25 26 26 27 27 28 28 32 32 32 32
+factor               : 10 11 12 16 16 23 23 24 24 25 25 26 26 27 27 28 28 32 32 32 32 35 35 36
 imprint              : 1
-instruction          : 13 14 15 16 17 18 19 20 21 21 22 22 22 0
+instruction          : 13 14 15 16 17 18 19 20 21 21 22 22 22 33 0
 sentence             : 3
 term                 : 7 8 9 10 11
 
@@ -157,17 +163,21 @@ state 0
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -177,11 +187,12 @@ state 0
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
     instruction                    shift and go to state 1
     imprint                        shift and go to state 2
@@ -217,8 +228,8 @@ state 3
     END             reduce using rule 2 (instruction -> expression .)
     ELSE            reduce using rule 2 (instruction -> expression .)
     ELSIF           reduce using rule 2 (instruction -> expression .)
-    ADD             shift and go to state 21
-    SUBSTRACT       shift and go to state 22
+    ADD             shift and go to state 22
+    SUBSTRACT       shift and go to state 23
 
 
 state 4
@@ -250,25 +261,25 @@ state 6
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    expression                     shift and go to state 23
+    expression                     shift and go to state 24
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
@@ -281,25 +292,25 @@ state 7
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    expression                     shift and go to state 27
+    expression                     shift and go to state 28
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
@@ -315,8 +326,8 @@ state 8
     END             reduce using rule 9 (expression -> term .)
     ELSE            reduce using rule 9 (expression -> term .)
     ELSIF           reduce using rule 9 (expression -> term .)
-    MULTIPLY        shift and go to state 28
-    DIVIDE          shift and go to state 29
+    MULTIPLY        shift and go to state 29
+    DIVIDE          shift and go to state 30
 
 
 state 9
@@ -330,50 +341,54 @@ state 9
     (26) comparison -> . factor GREATER factor
     (27) comparison -> . factor GREATEREQUAL factor
     (28) comparison -> . factor LESSEQUAL factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    comparison                     shift and go to state 30
-    factor                         shift and go to state 31
+    comparison                     shift and go to state 31
+    factor                         shift and go to state 32
 
 state 10
 
     (16) sentence -> FOR . ID IN factor DOT DOT factor instruction END
     (17) sentence -> FOR . ID IN ID instruction END
 
-    ID              shift and go to state 32
+    ID              shift and go to state 33
 
 
 state 11
 
     (29) assignment -> ID . ASSIGN expression
     (32) assignment -> ID . ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
-    (36) factor -> ID .
+    (34) assignment -> ID . DOT LENGTH
+    (35) assignment -> ID . DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> ID . DOT PUSH LPAREN factor RPAREN
+    (40) factor -> ID .
 
-    ASSIGN          shift and go to state 33
-    MULTIPLY        reduce using rule 36 (factor -> ID .)
-    DIVIDE          reduce using rule 36 (factor -> ID .)
-    ADD             reduce using rule 36 (factor -> ID .)
-    SUBSTRACT       reduce using rule 36 (factor -> ID .)
-    $end            reduce using rule 36 (factor -> ID .)
-    END             reduce using rule 36 (factor -> ID .)
-    ELSE            reduce using rule 36 (factor -> ID .)
-    ELSIF           reduce using rule 36 (factor -> ID .)
+    ASSIGN          shift and go to state 34
+    DOT             shift and go to state 35
+    MULTIPLY        reduce using rule 40 (factor -> ID .)
+    DIVIDE          reduce using rule 40 (factor -> ID .)
+    ADD             reduce using rule 40 (factor -> ID .)
+    SUBSTRACT       reduce using rule 40 (factor -> ID .)
+    $end            reduce using rule 40 (factor -> ID .)
+    END             reduce using rule 40 (factor -> ID .)
+    ELSE            reduce using rule 40 (factor -> ID .)
+    ELSIF           reduce using rule 40 (factor -> ID .)
 
 
 state 12
@@ -403,309 +418,326 @@ state 13
     (26) comparison -> . factor GREATER factor
     (27) comparison -> . factor GREATEREQUAL factor
     (28) comparison -> . factor LESSEQUAL factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    comparison                     shift and go to state 34
-    factor                         shift and go to state 31
+    comparison                     shift and go to state 36
+    factor                         shift and go to state 32
 
 state 14
 
     (30) assignment -> GLOBALID . ASSIGN expression
-    (37) factor -> GLOBALID .
+    (41) factor -> GLOBALID .
 
-    ASSIGN          shift and go to state 35
-    MULTIPLY        reduce using rule 37 (factor -> GLOBALID .)
-    DIVIDE          reduce using rule 37 (factor -> GLOBALID .)
-    ADD             reduce using rule 37 (factor -> GLOBALID .)
-    SUBSTRACT       reduce using rule 37 (factor -> GLOBALID .)
-    $end            reduce using rule 37 (factor -> GLOBALID .)
-    END             reduce using rule 37 (factor -> GLOBALID .)
-    ELSE            reduce using rule 37 (factor -> GLOBALID .)
-    ELSIF           reduce using rule 37 (factor -> GLOBALID .)
+    ASSIGN          shift and go to state 37
+    MULTIPLY        reduce using rule 41 (factor -> GLOBALID .)
+    DIVIDE          reduce using rule 41 (factor -> GLOBALID .)
+    ADD             reduce using rule 41 (factor -> GLOBALID .)
+    SUBSTRACT       reduce using rule 41 (factor -> GLOBALID .)
+    $end            reduce using rule 41 (factor -> GLOBALID .)
+    END             reduce using rule 41 (factor -> GLOBALID .)
+    ELSE            reduce using rule 41 (factor -> GLOBALID .)
+    ELSIF           reduce using rule 41 (factor -> GLOBALID .)
 
 
 state 15
 
     (31) assignment -> INSTANCEID . ASSIGN expression
-    (38) factor -> INSTANCEID .
+    (42) factor -> INSTANCEID .
 
-    ASSIGN          shift and go to state 36
-    MULTIPLY        reduce using rule 38 (factor -> INSTANCEID .)
-    DIVIDE          reduce using rule 38 (factor -> INSTANCEID .)
-    ADD             reduce using rule 38 (factor -> INSTANCEID .)
-    SUBSTRACT       reduce using rule 38 (factor -> INSTANCEID .)
-    $end            reduce using rule 38 (factor -> INSTANCEID .)
-    END             reduce using rule 38 (factor -> INSTANCEID .)
-    ELSE            reduce using rule 38 (factor -> INSTANCEID .)
-    ELSIF           reduce using rule 38 (factor -> INSTANCEID .)
+    ASSIGN          shift and go to state 38
+    MULTIPLY        reduce using rule 42 (factor -> INSTANCEID .)
+    DIVIDE          reduce using rule 42 (factor -> INSTANCEID .)
+    ADD             reduce using rule 42 (factor -> INSTANCEID .)
+    SUBSTRACT       reduce using rule 42 (factor -> INSTANCEID .)
+    $end            reduce using rule 42 (factor -> INSTANCEID .)
+    END             reduce using rule 42 (factor -> INSTANCEID .)
+    ELSE            reduce using rule 42 (factor -> INSTANCEID .)
+    ELSIF           reduce using rule 42 (factor -> INSTANCEID .)
 
 
 state 16
 
-    (33) factor -> INTEGER .
+    (33) assignment -> DEF . ID instruction END
 
-    MULTIPLY        reduce using rule 33 (factor -> INTEGER .)
-    DIVIDE          reduce using rule 33 (factor -> INTEGER .)
-    ADD             reduce using rule 33 (factor -> INTEGER .)
-    SUBSTRACT       reduce using rule 33 (factor -> INTEGER .)
-    $end            reduce using rule 33 (factor -> INTEGER .)
-    END             reduce using rule 33 (factor -> INTEGER .)
-    ELSE            reduce using rule 33 (factor -> INTEGER .)
-    ELSIF           reduce using rule 33 (factor -> INTEGER .)
-    EQUALS          reduce using rule 33 (factor -> INTEGER .)
-    DIFFERENT       reduce using rule 33 (factor -> INTEGER .)
-    LESS            reduce using rule 33 (factor -> INTEGER .)
-    GREATER         reduce using rule 33 (factor -> INTEGER .)
-    GREATEREQUAL    reduce using rule 33 (factor -> INTEGER .)
-    LESSEQUAL       reduce using rule 33 (factor -> INTEGER .)
-    DO              reduce using rule 33 (factor -> INTEGER .)
-    OR              reduce using rule 33 (factor -> INTEGER .)
-    AND             reduce using rule 33 (factor -> INTEGER .)
-    PRINT           reduce using rule 33 (factor -> INTEGER .)
-    PUTS            reduce using rule 33 (factor -> INTEGER .)
-    WHILE           reduce using rule 33 (factor -> INTEGER .)
-    FOR             reduce using rule 33 (factor -> INTEGER .)
-    IF              reduce using rule 33 (factor -> INTEGER .)
-    ID              reduce using rule 33 (factor -> INTEGER .)
-    GLOBALID        reduce using rule 33 (factor -> INTEGER .)
-    INSTANCEID      reduce using rule 33 (factor -> INTEGER .)
-    INTEGER         reduce using rule 33 (factor -> INTEGER .)
-    FLOAT           reduce using rule 33 (factor -> INTEGER .)
-    STRING          reduce using rule 33 (factor -> INTEGER .)
-    FALSE           reduce using rule 33 (factor -> INTEGER .)
-    TRUE            reduce using rule 33 (factor -> INTEGER .)
-    DOT             reduce using rule 33 (factor -> INTEGER .)
-    COMMA           reduce using rule 33 (factor -> INTEGER .)
-    RBRACKET        reduce using rule 33 (factor -> INTEGER .)
+    ID              shift and go to state 39
 
 
 state 17
 
-    (34) factor -> FLOAT .
+    (37) factor -> INTEGER .
 
-    MULTIPLY        reduce using rule 34 (factor -> FLOAT .)
-    DIVIDE          reduce using rule 34 (factor -> FLOAT .)
-    ADD             reduce using rule 34 (factor -> FLOAT .)
-    SUBSTRACT       reduce using rule 34 (factor -> FLOAT .)
-    $end            reduce using rule 34 (factor -> FLOAT .)
-    END             reduce using rule 34 (factor -> FLOAT .)
-    ELSE            reduce using rule 34 (factor -> FLOAT .)
-    ELSIF           reduce using rule 34 (factor -> FLOAT .)
-    EQUALS          reduce using rule 34 (factor -> FLOAT .)
-    DIFFERENT       reduce using rule 34 (factor -> FLOAT .)
-    LESS            reduce using rule 34 (factor -> FLOAT .)
-    GREATER         reduce using rule 34 (factor -> FLOAT .)
-    GREATEREQUAL    reduce using rule 34 (factor -> FLOAT .)
-    LESSEQUAL       reduce using rule 34 (factor -> FLOAT .)
-    DO              reduce using rule 34 (factor -> FLOAT .)
-    OR              reduce using rule 34 (factor -> FLOAT .)
-    AND             reduce using rule 34 (factor -> FLOAT .)
-    PRINT           reduce using rule 34 (factor -> FLOAT .)
-    PUTS            reduce using rule 34 (factor -> FLOAT .)
-    WHILE           reduce using rule 34 (factor -> FLOAT .)
-    FOR             reduce using rule 34 (factor -> FLOAT .)
-    IF              reduce using rule 34 (factor -> FLOAT .)
-    ID              reduce using rule 34 (factor -> FLOAT .)
-    GLOBALID        reduce using rule 34 (factor -> FLOAT .)
-    INSTANCEID      reduce using rule 34 (factor -> FLOAT .)
-    INTEGER         reduce using rule 34 (factor -> FLOAT .)
-    FLOAT           reduce using rule 34 (factor -> FLOAT .)
-    STRING          reduce using rule 34 (factor -> FLOAT .)
-    FALSE           reduce using rule 34 (factor -> FLOAT .)
-    TRUE            reduce using rule 34 (factor -> FLOAT .)
-    DOT             reduce using rule 34 (factor -> FLOAT .)
-    COMMA           reduce using rule 34 (factor -> FLOAT .)
-    RBRACKET        reduce using rule 34 (factor -> FLOAT .)
+    MULTIPLY        reduce using rule 37 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 37 (factor -> INTEGER .)
+    ADD             reduce using rule 37 (factor -> INTEGER .)
+    SUBSTRACT       reduce using rule 37 (factor -> INTEGER .)
+    $end            reduce using rule 37 (factor -> INTEGER .)
+    END             reduce using rule 37 (factor -> INTEGER .)
+    ELSE            reduce using rule 37 (factor -> INTEGER .)
+    ELSIF           reduce using rule 37 (factor -> INTEGER .)
+    EQUALS          reduce using rule 37 (factor -> INTEGER .)
+    DIFFERENT       reduce using rule 37 (factor -> INTEGER .)
+    LESS            reduce using rule 37 (factor -> INTEGER .)
+    GREATER         reduce using rule 37 (factor -> INTEGER .)
+    GREATEREQUAL    reduce using rule 37 (factor -> INTEGER .)
+    LESSEQUAL       reduce using rule 37 (factor -> INTEGER .)
+    DO              reduce using rule 37 (factor -> INTEGER .)
+    OR              reduce using rule 37 (factor -> INTEGER .)
+    AND             reduce using rule 37 (factor -> INTEGER .)
+    PRINT           reduce using rule 37 (factor -> INTEGER .)
+    PUTS            reduce using rule 37 (factor -> INTEGER .)
+    WHILE           reduce using rule 37 (factor -> INTEGER .)
+    FOR             reduce using rule 37 (factor -> INTEGER .)
+    IF              reduce using rule 37 (factor -> INTEGER .)
+    ID              reduce using rule 37 (factor -> INTEGER .)
+    GLOBALID        reduce using rule 37 (factor -> INTEGER .)
+    INSTANCEID      reduce using rule 37 (factor -> INTEGER .)
+    DEF             reduce using rule 37 (factor -> INTEGER .)
+    INTEGER         reduce using rule 37 (factor -> INTEGER .)
+    FLOAT           reduce using rule 37 (factor -> INTEGER .)
+    STRING          reduce using rule 37 (factor -> INTEGER .)
+    FALSE           reduce using rule 37 (factor -> INTEGER .)
+    TRUE            reduce using rule 37 (factor -> INTEGER .)
+    DOT             reduce using rule 37 (factor -> INTEGER .)
+    COMMA           reduce using rule 37 (factor -> INTEGER .)
+    RPAREN          reduce using rule 37 (factor -> INTEGER .)
+    RBRACKET        reduce using rule 37 (factor -> INTEGER .)
 
 
 state 18
 
-    (35) factor -> STRING .
+    (38) factor -> FLOAT .
 
-    MULTIPLY        reduce using rule 35 (factor -> STRING .)
-    DIVIDE          reduce using rule 35 (factor -> STRING .)
-    ADD             reduce using rule 35 (factor -> STRING .)
-    SUBSTRACT       reduce using rule 35 (factor -> STRING .)
-    $end            reduce using rule 35 (factor -> STRING .)
-    END             reduce using rule 35 (factor -> STRING .)
-    ELSE            reduce using rule 35 (factor -> STRING .)
-    ELSIF           reduce using rule 35 (factor -> STRING .)
-    EQUALS          reduce using rule 35 (factor -> STRING .)
-    DIFFERENT       reduce using rule 35 (factor -> STRING .)
-    LESS            reduce using rule 35 (factor -> STRING .)
-    GREATER         reduce using rule 35 (factor -> STRING .)
-    GREATEREQUAL    reduce using rule 35 (factor -> STRING .)
-    LESSEQUAL       reduce using rule 35 (factor -> STRING .)
-    DO              reduce using rule 35 (factor -> STRING .)
-    OR              reduce using rule 35 (factor -> STRING .)
-    AND             reduce using rule 35 (factor -> STRING .)
-    PRINT           reduce using rule 35 (factor -> STRING .)
-    PUTS            reduce using rule 35 (factor -> STRING .)
-    WHILE           reduce using rule 35 (factor -> STRING .)
-    FOR             reduce using rule 35 (factor -> STRING .)
-    IF              reduce using rule 35 (factor -> STRING .)
-    ID              reduce using rule 35 (factor -> STRING .)
-    GLOBALID        reduce using rule 35 (factor -> STRING .)
-    INSTANCEID      reduce using rule 35 (factor -> STRING .)
-    INTEGER         reduce using rule 35 (factor -> STRING .)
-    FLOAT           reduce using rule 35 (factor -> STRING .)
-    STRING          reduce using rule 35 (factor -> STRING .)
-    FALSE           reduce using rule 35 (factor -> STRING .)
-    TRUE            reduce using rule 35 (factor -> STRING .)
-    DOT             reduce using rule 35 (factor -> STRING .)
-    COMMA           reduce using rule 35 (factor -> STRING .)
-    RBRACKET        reduce using rule 35 (factor -> STRING .)
+    MULTIPLY        reduce using rule 38 (factor -> FLOAT .)
+    DIVIDE          reduce using rule 38 (factor -> FLOAT .)
+    ADD             reduce using rule 38 (factor -> FLOAT .)
+    SUBSTRACT       reduce using rule 38 (factor -> FLOAT .)
+    $end            reduce using rule 38 (factor -> FLOAT .)
+    END             reduce using rule 38 (factor -> FLOAT .)
+    ELSE            reduce using rule 38 (factor -> FLOAT .)
+    ELSIF           reduce using rule 38 (factor -> FLOAT .)
+    EQUALS          reduce using rule 38 (factor -> FLOAT .)
+    DIFFERENT       reduce using rule 38 (factor -> FLOAT .)
+    LESS            reduce using rule 38 (factor -> FLOAT .)
+    GREATER         reduce using rule 38 (factor -> FLOAT .)
+    GREATEREQUAL    reduce using rule 38 (factor -> FLOAT .)
+    LESSEQUAL       reduce using rule 38 (factor -> FLOAT .)
+    DO              reduce using rule 38 (factor -> FLOAT .)
+    OR              reduce using rule 38 (factor -> FLOAT .)
+    AND             reduce using rule 38 (factor -> FLOAT .)
+    PRINT           reduce using rule 38 (factor -> FLOAT .)
+    PUTS            reduce using rule 38 (factor -> FLOAT .)
+    WHILE           reduce using rule 38 (factor -> FLOAT .)
+    FOR             reduce using rule 38 (factor -> FLOAT .)
+    IF              reduce using rule 38 (factor -> FLOAT .)
+    ID              reduce using rule 38 (factor -> FLOAT .)
+    GLOBALID        reduce using rule 38 (factor -> FLOAT .)
+    INSTANCEID      reduce using rule 38 (factor -> FLOAT .)
+    DEF             reduce using rule 38 (factor -> FLOAT .)
+    INTEGER         reduce using rule 38 (factor -> FLOAT .)
+    FLOAT           reduce using rule 38 (factor -> FLOAT .)
+    STRING          reduce using rule 38 (factor -> FLOAT .)
+    FALSE           reduce using rule 38 (factor -> FLOAT .)
+    TRUE            reduce using rule 38 (factor -> FLOAT .)
+    DOT             reduce using rule 38 (factor -> FLOAT .)
+    COMMA           reduce using rule 38 (factor -> FLOAT .)
+    RPAREN          reduce using rule 38 (factor -> FLOAT .)
+    RBRACKET        reduce using rule 38 (factor -> FLOAT .)
 
 
 state 19
 
-    (39) factor -> FALSE .
+    (39) factor -> STRING .
 
-    MULTIPLY        reduce using rule 39 (factor -> FALSE .)
-    DIVIDE          reduce using rule 39 (factor -> FALSE .)
-    ADD             reduce using rule 39 (factor -> FALSE .)
-    SUBSTRACT       reduce using rule 39 (factor -> FALSE .)
-    $end            reduce using rule 39 (factor -> FALSE .)
-    END             reduce using rule 39 (factor -> FALSE .)
-    ELSE            reduce using rule 39 (factor -> FALSE .)
-    ELSIF           reduce using rule 39 (factor -> FALSE .)
-    EQUALS          reduce using rule 39 (factor -> FALSE .)
-    DIFFERENT       reduce using rule 39 (factor -> FALSE .)
-    LESS            reduce using rule 39 (factor -> FALSE .)
-    GREATER         reduce using rule 39 (factor -> FALSE .)
-    GREATEREQUAL    reduce using rule 39 (factor -> FALSE .)
-    LESSEQUAL       reduce using rule 39 (factor -> FALSE .)
-    DO              reduce using rule 39 (factor -> FALSE .)
-    OR              reduce using rule 39 (factor -> FALSE .)
-    AND             reduce using rule 39 (factor -> FALSE .)
-    PRINT           reduce using rule 39 (factor -> FALSE .)
-    PUTS            reduce using rule 39 (factor -> FALSE .)
-    WHILE           reduce using rule 39 (factor -> FALSE .)
-    FOR             reduce using rule 39 (factor -> FALSE .)
-    IF              reduce using rule 39 (factor -> FALSE .)
-    ID              reduce using rule 39 (factor -> FALSE .)
-    GLOBALID        reduce using rule 39 (factor -> FALSE .)
-    INSTANCEID      reduce using rule 39 (factor -> FALSE .)
-    INTEGER         reduce using rule 39 (factor -> FALSE .)
-    FLOAT           reduce using rule 39 (factor -> FALSE .)
-    STRING          reduce using rule 39 (factor -> FALSE .)
-    FALSE           reduce using rule 39 (factor -> FALSE .)
-    TRUE            reduce using rule 39 (factor -> FALSE .)
-    DOT             reduce using rule 39 (factor -> FALSE .)
-    COMMA           reduce using rule 39 (factor -> FALSE .)
-    RBRACKET        reduce using rule 39 (factor -> FALSE .)
+    MULTIPLY        reduce using rule 39 (factor -> STRING .)
+    DIVIDE          reduce using rule 39 (factor -> STRING .)
+    ADD             reduce using rule 39 (factor -> STRING .)
+    SUBSTRACT       reduce using rule 39 (factor -> STRING .)
+    $end            reduce using rule 39 (factor -> STRING .)
+    END             reduce using rule 39 (factor -> STRING .)
+    ELSE            reduce using rule 39 (factor -> STRING .)
+    ELSIF           reduce using rule 39 (factor -> STRING .)
+    EQUALS          reduce using rule 39 (factor -> STRING .)
+    DIFFERENT       reduce using rule 39 (factor -> STRING .)
+    LESS            reduce using rule 39 (factor -> STRING .)
+    GREATER         reduce using rule 39 (factor -> STRING .)
+    GREATEREQUAL    reduce using rule 39 (factor -> STRING .)
+    LESSEQUAL       reduce using rule 39 (factor -> STRING .)
+    DO              reduce using rule 39 (factor -> STRING .)
+    OR              reduce using rule 39 (factor -> STRING .)
+    AND             reduce using rule 39 (factor -> STRING .)
+    PRINT           reduce using rule 39 (factor -> STRING .)
+    PUTS            reduce using rule 39 (factor -> STRING .)
+    WHILE           reduce using rule 39 (factor -> STRING .)
+    FOR             reduce using rule 39 (factor -> STRING .)
+    IF              reduce using rule 39 (factor -> STRING .)
+    ID              reduce using rule 39 (factor -> STRING .)
+    GLOBALID        reduce using rule 39 (factor -> STRING .)
+    INSTANCEID      reduce using rule 39 (factor -> STRING .)
+    DEF             reduce using rule 39 (factor -> STRING .)
+    INTEGER         reduce using rule 39 (factor -> STRING .)
+    FLOAT           reduce using rule 39 (factor -> STRING .)
+    STRING          reduce using rule 39 (factor -> STRING .)
+    FALSE           reduce using rule 39 (factor -> STRING .)
+    TRUE            reduce using rule 39 (factor -> STRING .)
+    DOT             reduce using rule 39 (factor -> STRING .)
+    COMMA           reduce using rule 39 (factor -> STRING .)
+    RPAREN          reduce using rule 39 (factor -> STRING .)
+    RBRACKET        reduce using rule 39 (factor -> STRING .)
 
 
 state 20
 
-    (40) factor -> TRUE .
+    (43) factor -> FALSE .
 
-    MULTIPLY        reduce using rule 40 (factor -> TRUE .)
-    DIVIDE          reduce using rule 40 (factor -> TRUE .)
-    ADD             reduce using rule 40 (factor -> TRUE .)
-    SUBSTRACT       reduce using rule 40 (factor -> TRUE .)
-    $end            reduce using rule 40 (factor -> TRUE .)
-    END             reduce using rule 40 (factor -> TRUE .)
-    ELSE            reduce using rule 40 (factor -> TRUE .)
-    ELSIF           reduce using rule 40 (factor -> TRUE .)
-    EQUALS          reduce using rule 40 (factor -> TRUE .)
-    DIFFERENT       reduce using rule 40 (factor -> TRUE .)
-    LESS            reduce using rule 40 (factor -> TRUE .)
-    GREATER         reduce using rule 40 (factor -> TRUE .)
-    GREATEREQUAL    reduce using rule 40 (factor -> TRUE .)
-    LESSEQUAL       reduce using rule 40 (factor -> TRUE .)
-    DO              reduce using rule 40 (factor -> TRUE .)
-    OR              reduce using rule 40 (factor -> TRUE .)
-    AND             reduce using rule 40 (factor -> TRUE .)
-    PRINT           reduce using rule 40 (factor -> TRUE .)
-    PUTS            reduce using rule 40 (factor -> TRUE .)
-    WHILE           reduce using rule 40 (factor -> TRUE .)
-    FOR             reduce using rule 40 (factor -> TRUE .)
-    IF              reduce using rule 40 (factor -> TRUE .)
-    ID              reduce using rule 40 (factor -> TRUE .)
-    GLOBALID        reduce using rule 40 (factor -> TRUE .)
-    INSTANCEID      reduce using rule 40 (factor -> TRUE .)
-    INTEGER         reduce using rule 40 (factor -> TRUE .)
-    FLOAT           reduce using rule 40 (factor -> TRUE .)
-    STRING          reduce using rule 40 (factor -> TRUE .)
-    FALSE           reduce using rule 40 (factor -> TRUE .)
-    TRUE            reduce using rule 40 (factor -> TRUE .)
-    DOT             reduce using rule 40 (factor -> TRUE .)
-    COMMA           reduce using rule 40 (factor -> TRUE .)
-    RBRACKET        reduce using rule 40 (factor -> TRUE .)
+    MULTIPLY        reduce using rule 43 (factor -> FALSE .)
+    DIVIDE          reduce using rule 43 (factor -> FALSE .)
+    ADD             reduce using rule 43 (factor -> FALSE .)
+    SUBSTRACT       reduce using rule 43 (factor -> FALSE .)
+    $end            reduce using rule 43 (factor -> FALSE .)
+    END             reduce using rule 43 (factor -> FALSE .)
+    ELSE            reduce using rule 43 (factor -> FALSE .)
+    ELSIF           reduce using rule 43 (factor -> FALSE .)
+    EQUALS          reduce using rule 43 (factor -> FALSE .)
+    DIFFERENT       reduce using rule 43 (factor -> FALSE .)
+    LESS            reduce using rule 43 (factor -> FALSE .)
+    GREATER         reduce using rule 43 (factor -> FALSE .)
+    GREATEREQUAL    reduce using rule 43 (factor -> FALSE .)
+    LESSEQUAL       reduce using rule 43 (factor -> FALSE .)
+    DO              reduce using rule 43 (factor -> FALSE .)
+    OR              reduce using rule 43 (factor -> FALSE .)
+    AND             reduce using rule 43 (factor -> FALSE .)
+    PRINT           reduce using rule 43 (factor -> FALSE .)
+    PUTS            reduce using rule 43 (factor -> FALSE .)
+    WHILE           reduce using rule 43 (factor -> FALSE .)
+    FOR             reduce using rule 43 (factor -> FALSE .)
+    IF              reduce using rule 43 (factor -> FALSE .)
+    ID              reduce using rule 43 (factor -> FALSE .)
+    GLOBALID        reduce using rule 43 (factor -> FALSE .)
+    INSTANCEID      reduce using rule 43 (factor -> FALSE .)
+    DEF             reduce using rule 43 (factor -> FALSE .)
+    INTEGER         reduce using rule 43 (factor -> FALSE .)
+    FLOAT           reduce using rule 43 (factor -> FALSE .)
+    STRING          reduce using rule 43 (factor -> FALSE .)
+    FALSE           reduce using rule 43 (factor -> FALSE .)
+    TRUE            reduce using rule 43 (factor -> FALSE .)
+    DOT             reduce using rule 43 (factor -> FALSE .)
+    COMMA           reduce using rule 43 (factor -> FALSE .)
+    RPAREN          reduce using rule 43 (factor -> FALSE .)
+    RBRACKET        reduce using rule 43 (factor -> FALSE .)
 
 
 state 21
+
+    (44) factor -> TRUE .
+
+    MULTIPLY        reduce using rule 44 (factor -> TRUE .)
+    DIVIDE          reduce using rule 44 (factor -> TRUE .)
+    ADD             reduce using rule 44 (factor -> TRUE .)
+    SUBSTRACT       reduce using rule 44 (factor -> TRUE .)
+    $end            reduce using rule 44 (factor -> TRUE .)
+    END             reduce using rule 44 (factor -> TRUE .)
+    ELSE            reduce using rule 44 (factor -> TRUE .)
+    ELSIF           reduce using rule 44 (factor -> TRUE .)
+    EQUALS          reduce using rule 44 (factor -> TRUE .)
+    DIFFERENT       reduce using rule 44 (factor -> TRUE .)
+    LESS            reduce using rule 44 (factor -> TRUE .)
+    GREATER         reduce using rule 44 (factor -> TRUE .)
+    GREATEREQUAL    reduce using rule 44 (factor -> TRUE .)
+    LESSEQUAL       reduce using rule 44 (factor -> TRUE .)
+    DO              reduce using rule 44 (factor -> TRUE .)
+    OR              reduce using rule 44 (factor -> TRUE .)
+    AND             reduce using rule 44 (factor -> TRUE .)
+    PRINT           reduce using rule 44 (factor -> TRUE .)
+    PUTS            reduce using rule 44 (factor -> TRUE .)
+    WHILE           reduce using rule 44 (factor -> TRUE .)
+    FOR             reduce using rule 44 (factor -> TRUE .)
+    IF              reduce using rule 44 (factor -> TRUE .)
+    ID              reduce using rule 44 (factor -> TRUE .)
+    GLOBALID        reduce using rule 44 (factor -> TRUE .)
+    INSTANCEID      reduce using rule 44 (factor -> TRUE .)
+    DEF             reduce using rule 44 (factor -> TRUE .)
+    INTEGER         reduce using rule 44 (factor -> TRUE .)
+    FLOAT           reduce using rule 44 (factor -> TRUE .)
+    STRING          reduce using rule 44 (factor -> TRUE .)
+    FALSE           reduce using rule 44 (factor -> TRUE .)
+    TRUE            reduce using rule 44 (factor -> TRUE .)
+    DOT             reduce using rule 44 (factor -> TRUE .)
+    COMMA           reduce using rule 44 (factor -> TRUE .)
+    RPAREN          reduce using rule 44 (factor -> TRUE .)
+    RBRACKET        reduce using rule 44 (factor -> TRUE .)
+
+
+state 22
 
     (7) expression -> expression ADD . term
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    term                           shift and go to state 37
+    term                           shift and go to state 40
     factor                         shift and go to state 12
 
-state 22
+state 23
 
     (8) expression -> expression SUBSTRACT . term
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    term                           shift and go to state 38
+    term                           shift and go to state 41
     factor                         shift and go to state 12
 
-state 23
+state 24
 
     (5) imprint -> PRINT expression .
     (7) expression -> expression . ADD term
@@ -715,127 +747,133 @@ state 23
     END             reduce using rule 5 (imprint -> PRINT expression .)
     ELSE            reduce using rule 5 (imprint -> PRINT expression .)
     ELSIF           reduce using rule 5 (imprint -> PRINT expression .)
-    ADD             shift and go to state 21
-    SUBSTRACT       shift and go to state 22
-
-
-state 24
-
-    (36) factor -> ID .
-
-    MULTIPLY        reduce using rule 36 (factor -> ID .)
-    DIVIDE          reduce using rule 36 (factor -> ID .)
-    ADD             reduce using rule 36 (factor -> ID .)
-    SUBSTRACT       reduce using rule 36 (factor -> ID .)
-    $end            reduce using rule 36 (factor -> ID .)
-    END             reduce using rule 36 (factor -> ID .)
-    ELSE            reduce using rule 36 (factor -> ID .)
-    ELSIF           reduce using rule 36 (factor -> ID .)
-    EQUALS          reduce using rule 36 (factor -> ID .)
-    DIFFERENT       reduce using rule 36 (factor -> ID .)
-    LESS            reduce using rule 36 (factor -> ID .)
-    GREATER         reduce using rule 36 (factor -> ID .)
-    GREATEREQUAL    reduce using rule 36 (factor -> ID .)
-    LESSEQUAL       reduce using rule 36 (factor -> ID .)
-    DO              reduce using rule 36 (factor -> ID .)
-    OR              reduce using rule 36 (factor -> ID .)
-    AND             reduce using rule 36 (factor -> ID .)
-    PRINT           reduce using rule 36 (factor -> ID .)
-    PUTS            reduce using rule 36 (factor -> ID .)
-    WHILE           reduce using rule 36 (factor -> ID .)
-    FOR             reduce using rule 36 (factor -> ID .)
-    IF              reduce using rule 36 (factor -> ID .)
-    ID              reduce using rule 36 (factor -> ID .)
-    GLOBALID        reduce using rule 36 (factor -> ID .)
-    INSTANCEID      reduce using rule 36 (factor -> ID .)
-    INTEGER         reduce using rule 36 (factor -> ID .)
-    FLOAT           reduce using rule 36 (factor -> ID .)
-    STRING          reduce using rule 36 (factor -> ID .)
-    FALSE           reduce using rule 36 (factor -> ID .)
-    TRUE            reduce using rule 36 (factor -> ID .)
-    COMMA           reduce using rule 36 (factor -> ID .)
-    RBRACKET        reduce using rule 36 (factor -> ID .)
+    ADD             shift and go to state 22
+    SUBSTRACT       shift and go to state 23
 
 
 state 25
 
-    (37) factor -> GLOBALID .
+    (40) factor -> ID .
 
-    MULTIPLY        reduce using rule 37 (factor -> GLOBALID .)
-    DIVIDE          reduce using rule 37 (factor -> GLOBALID .)
-    ADD             reduce using rule 37 (factor -> GLOBALID .)
-    SUBSTRACT       reduce using rule 37 (factor -> GLOBALID .)
-    $end            reduce using rule 37 (factor -> GLOBALID .)
-    END             reduce using rule 37 (factor -> GLOBALID .)
-    ELSE            reduce using rule 37 (factor -> GLOBALID .)
-    ELSIF           reduce using rule 37 (factor -> GLOBALID .)
-    EQUALS          reduce using rule 37 (factor -> GLOBALID .)
-    DIFFERENT       reduce using rule 37 (factor -> GLOBALID .)
-    LESS            reduce using rule 37 (factor -> GLOBALID .)
-    GREATER         reduce using rule 37 (factor -> GLOBALID .)
-    GREATEREQUAL    reduce using rule 37 (factor -> GLOBALID .)
-    LESSEQUAL       reduce using rule 37 (factor -> GLOBALID .)
-    DO              reduce using rule 37 (factor -> GLOBALID .)
-    OR              reduce using rule 37 (factor -> GLOBALID .)
-    AND             reduce using rule 37 (factor -> GLOBALID .)
-    PRINT           reduce using rule 37 (factor -> GLOBALID .)
-    PUTS            reduce using rule 37 (factor -> GLOBALID .)
-    WHILE           reduce using rule 37 (factor -> GLOBALID .)
-    FOR             reduce using rule 37 (factor -> GLOBALID .)
-    IF              reduce using rule 37 (factor -> GLOBALID .)
-    ID              reduce using rule 37 (factor -> GLOBALID .)
-    GLOBALID        reduce using rule 37 (factor -> GLOBALID .)
-    INSTANCEID      reduce using rule 37 (factor -> GLOBALID .)
-    INTEGER         reduce using rule 37 (factor -> GLOBALID .)
-    FLOAT           reduce using rule 37 (factor -> GLOBALID .)
-    STRING          reduce using rule 37 (factor -> GLOBALID .)
-    FALSE           reduce using rule 37 (factor -> GLOBALID .)
-    TRUE            reduce using rule 37 (factor -> GLOBALID .)
-    DOT             reduce using rule 37 (factor -> GLOBALID .)
-    COMMA           reduce using rule 37 (factor -> GLOBALID .)
-    RBRACKET        reduce using rule 37 (factor -> GLOBALID .)
+    MULTIPLY        reduce using rule 40 (factor -> ID .)
+    DIVIDE          reduce using rule 40 (factor -> ID .)
+    ADD             reduce using rule 40 (factor -> ID .)
+    SUBSTRACT       reduce using rule 40 (factor -> ID .)
+    $end            reduce using rule 40 (factor -> ID .)
+    END             reduce using rule 40 (factor -> ID .)
+    ELSE            reduce using rule 40 (factor -> ID .)
+    ELSIF           reduce using rule 40 (factor -> ID .)
+    EQUALS          reduce using rule 40 (factor -> ID .)
+    DIFFERENT       reduce using rule 40 (factor -> ID .)
+    LESS            reduce using rule 40 (factor -> ID .)
+    GREATER         reduce using rule 40 (factor -> ID .)
+    GREATEREQUAL    reduce using rule 40 (factor -> ID .)
+    LESSEQUAL       reduce using rule 40 (factor -> ID .)
+    DO              reduce using rule 40 (factor -> ID .)
+    OR              reduce using rule 40 (factor -> ID .)
+    AND             reduce using rule 40 (factor -> ID .)
+    PRINT           reduce using rule 40 (factor -> ID .)
+    PUTS            reduce using rule 40 (factor -> ID .)
+    WHILE           reduce using rule 40 (factor -> ID .)
+    FOR             reduce using rule 40 (factor -> ID .)
+    IF              reduce using rule 40 (factor -> ID .)
+    ID              reduce using rule 40 (factor -> ID .)
+    GLOBALID        reduce using rule 40 (factor -> ID .)
+    INSTANCEID      reduce using rule 40 (factor -> ID .)
+    DEF             reduce using rule 40 (factor -> ID .)
+    INTEGER         reduce using rule 40 (factor -> ID .)
+    FLOAT           reduce using rule 40 (factor -> ID .)
+    STRING          reduce using rule 40 (factor -> ID .)
+    FALSE           reduce using rule 40 (factor -> ID .)
+    TRUE            reduce using rule 40 (factor -> ID .)
+    COMMA           reduce using rule 40 (factor -> ID .)
+    RPAREN          reduce using rule 40 (factor -> ID .)
+    RBRACKET        reduce using rule 40 (factor -> ID .)
 
 
 state 26
 
-    (38) factor -> INSTANCEID .
+    (41) factor -> GLOBALID .
 
-    MULTIPLY        reduce using rule 38 (factor -> INSTANCEID .)
-    DIVIDE          reduce using rule 38 (factor -> INSTANCEID .)
-    ADD             reduce using rule 38 (factor -> INSTANCEID .)
-    SUBSTRACT       reduce using rule 38 (factor -> INSTANCEID .)
-    $end            reduce using rule 38 (factor -> INSTANCEID .)
-    END             reduce using rule 38 (factor -> INSTANCEID .)
-    ELSE            reduce using rule 38 (factor -> INSTANCEID .)
-    ELSIF           reduce using rule 38 (factor -> INSTANCEID .)
-    EQUALS          reduce using rule 38 (factor -> INSTANCEID .)
-    DIFFERENT       reduce using rule 38 (factor -> INSTANCEID .)
-    LESS            reduce using rule 38 (factor -> INSTANCEID .)
-    GREATER         reduce using rule 38 (factor -> INSTANCEID .)
-    GREATEREQUAL    reduce using rule 38 (factor -> INSTANCEID .)
-    LESSEQUAL       reduce using rule 38 (factor -> INSTANCEID .)
-    DO              reduce using rule 38 (factor -> INSTANCEID .)
-    OR              reduce using rule 38 (factor -> INSTANCEID .)
-    AND             reduce using rule 38 (factor -> INSTANCEID .)
-    PRINT           reduce using rule 38 (factor -> INSTANCEID .)
-    PUTS            reduce using rule 38 (factor -> INSTANCEID .)
-    WHILE           reduce using rule 38 (factor -> INSTANCEID .)
-    FOR             reduce using rule 38 (factor -> INSTANCEID .)
-    IF              reduce using rule 38 (factor -> INSTANCEID .)
-    ID              reduce using rule 38 (factor -> INSTANCEID .)
-    GLOBALID        reduce using rule 38 (factor -> INSTANCEID .)
-    INSTANCEID      reduce using rule 38 (factor -> INSTANCEID .)
-    INTEGER         reduce using rule 38 (factor -> INSTANCEID .)
-    FLOAT           reduce using rule 38 (factor -> INSTANCEID .)
-    STRING          reduce using rule 38 (factor -> INSTANCEID .)
-    FALSE           reduce using rule 38 (factor -> INSTANCEID .)
-    TRUE            reduce using rule 38 (factor -> INSTANCEID .)
-    DOT             reduce using rule 38 (factor -> INSTANCEID .)
-    COMMA           reduce using rule 38 (factor -> INSTANCEID .)
-    RBRACKET        reduce using rule 38 (factor -> INSTANCEID .)
+    MULTIPLY        reduce using rule 41 (factor -> GLOBALID .)
+    DIVIDE          reduce using rule 41 (factor -> GLOBALID .)
+    ADD             reduce using rule 41 (factor -> GLOBALID .)
+    SUBSTRACT       reduce using rule 41 (factor -> GLOBALID .)
+    $end            reduce using rule 41 (factor -> GLOBALID .)
+    END             reduce using rule 41 (factor -> GLOBALID .)
+    ELSE            reduce using rule 41 (factor -> GLOBALID .)
+    ELSIF           reduce using rule 41 (factor -> GLOBALID .)
+    EQUALS          reduce using rule 41 (factor -> GLOBALID .)
+    DIFFERENT       reduce using rule 41 (factor -> GLOBALID .)
+    LESS            reduce using rule 41 (factor -> GLOBALID .)
+    GREATER         reduce using rule 41 (factor -> GLOBALID .)
+    GREATEREQUAL    reduce using rule 41 (factor -> GLOBALID .)
+    LESSEQUAL       reduce using rule 41 (factor -> GLOBALID .)
+    DO              reduce using rule 41 (factor -> GLOBALID .)
+    OR              reduce using rule 41 (factor -> GLOBALID .)
+    AND             reduce using rule 41 (factor -> GLOBALID .)
+    PRINT           reduce using rule 41 (factor -> GLOBALID .)
+    PUTS            reduce using rule 41 (factor -> GLOBALID .)
+    WHILE           reduce using rule 41 (factor -> GLOBALID .)
+    FOR             reduce using rule 41 (factor -> GLOBALID .)
+    IF              reduce using rule 41 (factor -> GLOBALID .)
+    ID              reduce using rule 41 (factor -> GLOBALID .)
+    GLOBALID        reduce using rule 41 (factor -> GLOBALID .)
+    INSTANCEID      reduce using rule 41 (factor -> GLOBALID .)
+    DEF             reduce using rule 41 (factor -> GLOBALID .)
+    INTEGER         reduce using rule 41 (factor -> GLOBALID .)
+    FLOAT           reduce using rule 41 (factor -> GLOBALID .)
+    STRING          reduce using rule 41 (factor -> GLOBALID .)
+    FALSE           reduce using rule 41 (factor -> GLOBALID .)
+    TRUE            reduce using rule 41 (factor -> GLOBALID .)
+    DOT             reduce using rule 41 (factor -> GLOBALID .)
+    COMMA           reduce using rule 41 (factor -> GLOBALID .)
+    RPAREN          reduce using rule 41 (factor -> GLOBALID .)
+    RBRACKET        reduce using rule 41 (factor -> GLOBALID .)
 
 
 state 27
+
+    (42) factor -> INSTANCEID .
+
+    MULTIPLY        reduce using rule 42 (factor -> INSTANCEID .)
+    DIVIDE          reduce using rule 42 (factor -> INSTANCEID .)
+    ADD             reduce using rule 42 (factor -> INSTANCEID .)
+    SUBSTRACT       reduce using rule 42 (factor -> INSTANCEID .)
+    $end            reduce using rule 42 (factor -> INSTANCEID .)
+    END             reduce using rule 42 (factor -> INSTANCEID .)
+    ELSE            reduce using rule 42 (factor -> INSTANCEID .)
+    ELSIF           reduce using rule 42 (factor -> INSTANCEID .)
+    EQUALS          reduce using rule 42 (factor -> INSTANCEID .)
+    DIFFERENT       reduce using rule 42 (factor -> INSTANCEID .)
+    LESS            reduce using rule 42 (factor -> INSTANCEID .)
+    GREATER         reduce using rule 42 (factor -> INSTANCEID .)
+    GREATEREQUAL    reduce using rule 42 (factor -> INSTANCEID .)
+    LESSEQUAL       reduce using rule 42 (factor -> INSTANCEID .)
+    DO              reduce using rule 42 (factor -> INSTANCEID .)
+    OR              reduce using rule 42 (factor -> INSTANCEID .)
+    AND             reduce using rule 42 (factor -> INSTANCEID .)
+    PRINT           reduce using rule 42 (factor -> INSTANCEID .)
+    PUTS            reduce using rule 42 (factor -> INSTANCEID .)
+    WHILE           reduce using rule 42 (factor -> INSTANCEID .)
+    FOR             reduce using rule 42 (factor -> INSTANCEID .)
+    IF              reduce using rule 42 (factor -> INSTANCEID .)
+    ID              reduce using rule 42 (factor -> INSTANCEID .)
+    GLOBALID        reduce using rule 42 (factor -> INSTANCEID .)
+    INSTANCEID      reduce using rule 42 (factor -> INSTANCEID .)
+    DEF             reduce using rule 42 (factor -> INSTANCEID .)
+    INTEGER         reduce using rule 42 (factor -> INSTANCEID .)
+    FLOAT           reduce using rule 42 (factor -> INSTANCEID .)
+    STRING          reduce using rule 42 (factor -> INSTANCEID .)
+    FALSE           reduce using rule 42 (factor -> INSTANCEID .)
+    TRUE            reduce using rule 42 (factor -> INSTANCEID .)
+    DOT             reduce using rule 42 (factor -> INSTANCEID .)
+    COMMA           reduce using rule 42 (factor -> INSTANCEID .)
+    RPAREN          reduce using rule 42 (factor -> INSTANCEID .)
+    RBRACKET        reduce using rule 42 (factor -> INSTANCEID .)
+
+
+state 28
 
     (6) imprint -> PUTS expression .
     (7) expression -> expression . ADD term
@@ -845,68 +883,68 @@ state 27
     END             reduce using rule 6 (imprint -> PUTS expression .)
     ELSE            reduce using rule 6 (imprint -> PUTS expression .)
     ELSIF           reduce using rule 6 (imprint -> PUTS expression .)
-    ADD             shift and go to state 21
-    SUBSTRACT       shift and go to state 22
+    ADD             shift and go to state 22
+    SUBSTRACT       shift and go to state 23
 
-
-state 28
-
-    (10) term -> term MULTIPLY . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 39
 
 state 29
 
-    (11) term -> term DIVIDE . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (10) term -> term MULTIPLY . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    factor                         shift and go to state 40
+    factor                         shift and go to state 42
 
 state 30
+
+    (11) term -> term DIVIDE . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 43
+
+state 31
 
     (13) sentence -> WHILE comparison . DO instruction END
     (14) sentence -> WHILE comparison . OR comparison DO instruction END
     (15) sentence -> WHILE comparison . AND comparison DO instruction END
 
-    DO              shift and go to state 41
-    OR              shift and go to state 42
-    AND             shift and go to state 43
+    DO              shift and go to state 44
+    OR              shift and go to state 45
+    AND             shift and go to state 46
 
 
-state 31
+state 32
 
     (23) comparison -> factor . EQUALS factor
     (24) comparison -> factor . DIFFERENT factor
@@ -915,23 +953,23 @@ state 31
     (27) comparison -> factor . GREATEREQUAL factor
     (28) comparison -> factor . LESSEQUAL factor
 
-    EQUALS          shift and go to state 44
-    DIFFERENT       shift and go to state 45
-    LESS            shift and go to state 46
-    GREATER         shift and go to state 47
-    GREATEREQUAL    shift and go to state 48
-    LESSEQUAL       shift and go to state 49
+    EQUALS          shift and go to state 47
+    DIFFERENT       shift and go to state 48
+    LESS            shift and go to state 49
+    GREATER         shift and go to state 50
+    GREATEREQUAL    shift and go to state 51
+    LESSEQUAL       shift and go to state 52
 
 
-state 32
+state 33
 
     (16) sentence -> FOR ID . IN factor DOT DOT factor instruction END
     (17) sentence -> FOR ID . IN ID instruction END
 
-    IN              shift and go to state 50
+    IN              shift and go to state 53
 
 
-state 33
+state 34
 
     (29) assignment -> ID ASSIGN . expression
     (32) assignment -> ID ASSIGN . LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
@@ -941,30 +979,41 @@ state 33
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    LBRACKET        shift and go to state 52
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    LBRACKET        shift and go to state 55
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    expression                     shift and go to state 51
+    expression                     shift and go to state 54
     factor                         shift and go to state 12
     term                           shift and go to state 8
 
-state 34
+state 35
+
+    (34) assignment -> ID DOT . LENGTH
+    (35) assignment -> ID DOT . INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> ID DOT . PUSH LPAREN factor RPAREN
+
+    LENGTH          shift and go to state 56
+    INSERT          shift and go to state 57
+    PUSH            shift and go to state 58
+
+
+state 36
 
     (18) sentence -> IF comparison . instruction END
     (19) sentence -> IF comparison . OR comparison instruction END
@@ -994,20 +1043,24 @@ state 34
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    OR              shift and go to state 54
-    AND             shift and go to state 55
+    OR              shift and go to state 60
+    AND             shift and go to state 61
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
     WHILE           shift and go to state 9
@@ -1016,13 +1069,14 @@ state 34
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 53
+    instruction                    shift and go to state 59
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -1030,7 +1084,7 @@ state 34
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 35
+state 37
 
     (30) assignment -> GLOBALID ASSIGN . expression
     (7) expression -> . expression ADD term
@@ -1039,29 +1093,29 @@ state 35
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    expression                     shift and go to state 56
+    expression                     shift and go to state 62
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 36
+state 38
 
     (31) assignment -> INSTANCEID ASSIGN . expression
     (7) expression -> . expression ADD term
@@ -1070,29 +1124,94 @@ state 36
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    expression                     shift and go to state 57
+    expression                     shift and go to state 63
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 37
+state 39
+
+    (33) assignment -> DEF ID . instruction END
+    (1) instruction -> . imprint
+    (2) instruction -> . expression
+    (3) instruction -> . sentence
+    (4) instruction -> . assignment
+    (5) imprint -> . PRINT expression
+    (6) imprint -> . PUTS expression
+    (7) expression -> . expression ADD term
+    (8) expression -> . expression SUBSTRACT term
+    (9) expression -> . term
+    (13) sentence -> . WHILE comparison DO instruction END
+    (14) sentence -> . WHILE comparison OR comparison DO instruction END
+    (15) sentence -> . WHILE comparison AND comparison DO instruction END
+    (16) sentence -> . FOR ID IN factor DOT DOT factor instruction END
+    (17) sentence -> . FOR ID IN ID instruction END
+    (18) sentence -> . IF comparison instruction END
+    (19) sentence -> . IF comparison OR comparison instruction END
+    (20) sentence -> . IF comparison AND comparison instruction END
+    (21) sentence -> . IF comparison instruction ELSE instruction END
+    (22) sentence -> . IF comparison instruction ELSIF instruction ELSE instruction END
+    (29) assignment -> . ID ASSIGN expression
+    (30) assignment -> . GLOBALID ASSIGN expression
+    (31) assignment -> . INSTANCEID ASSIGN expression
+    (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    PRINT           shift and go to state 6
+    PUTS            shift and go to state 7
+    WHILE           shift and go to state 9
+    FOR             shift and go to state 10
+    IF              shift and go to state 13
+    ID              shift and go to state 11
+    GLOBALID        shift and go to state 14
+    INSTANCEID      shift and go to state 15
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    instruction                    shift and go to state 64
+    imprint                        shift and go to state 2
+    expression                     shift and go to state 3
+    sentence                       shift and go to state 4
+    assignment                     shift and go to state 5
+    term                           shift and go to state 8
+    factor                         shift and go to state 12
+
+state 40
 
     (7) expression -> expression ADD term .
     (10) term -> term . MULTIPLY factor
@@ -1104,11 +1223,11 @@ state 37
     END             reduce using rule 7 (expression -> expression ADD term .)
     ELSE            reduce using rule 7 (expression -> expression ADD term .)
     ELSIF           reduce using rule 7 (expression -> expression ADD term .)
-    MULTIPLY        shift and go to state 28
-    DIVIDE          shift and go to state 29
+    MULTIPLY        shift and go to state 29
+    DIVIDE          shift and go to state 30
 
 
-state 38
+state 41
 
     (8) expression -> expression SUBSTRACT term .
     (10) term -> term . MULTIPLY factor
@@ -1120,11 +1239,11 @@ state 38
     END             reduce using rule 8 (expression -> expression SUBSTRACT term .)
     ELSE            reduce using rule 8 (expression -> expression SUBSTRACT term .)
     ELSIF           reduce using rule 8 (expression -> expression SUBSTRACT term .)
-    MULTIPLY        shift and go to state 28
-    DIVIDE          shift and go to state 29
+    MULTIPLY        shift and go to state 29
+    DIVIDE          shift and go to state 30
 
 
-state 39
+state 42
 
     (10) term -> term MULTIPLY factor .
 
@@ -1138,7 +1257,7 @@ state 39
     ELSIF           reduce using rule 10 (term -> term MULTIPLY factor .)
 
 
-state 40
+state 43
 
     (11) term -> term DIVIDE factor .
 
@@ -1152,7 +1271,7 @@ state 40
     ELSIF           reduce using rule 11 (term -> term DIVIDE factor .)
 
 
-state 41
+state 44
 
     (13) sentence -> WHILE comparison DO . instruction END
     (1) instruction -> . imprint
@@ -1178,17 +1297,21 @@ state 41
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -1198,13 +1321,14 @@ state 41
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 58
+    instruction                    shift and go to state 65
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -1212,7 +1336,7 @@ state 41
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 42
+state 45
 
     (14) sentence -> WHILE comparison OR . comparison DO instruction END
     (23) comparison -> . factor EQUALS factor
@@ -1221,28 +1345,28 @@ state 42
     (26) comparison -> . factor GREATER factor
     (27) comparison -> . factor GREATEREQUAL factor
     (28) comparison -> . factor LESSEQUAL factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    comparison                     shift and go to state 59
-    factor                         shift and go to state 31
+    comparison                     shift and go to state 66
+    factor                         shift and go to state 32
 
-state 43
+state 46
 
     (15) sentence -> WHILE comparison AND . comparison DO instruction END
     (23) comparison -> . factor EQUALS factor
@@ -1251,190 +1375,190 @@ state 43
     (26) comparison -> . factor GREATER factor
     (27) comparison -> . factor GREATEREQUAL factor
     (28) comparison -> . factor LESSEQUAL factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    comparison                     shift and go to state 60
-    factor                         shift and go to state 31
-
-state 44
-
-    (23) comparison -> factor EQUALS . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 61
-
-state 45
-
-    (24) comparison -> factor DIFFERENT . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 62
-
-state 46
-
-    (25) comparison -> factor LESS . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 63
+    comparison                     shift and go to state 67
+    factor                         shift and go to state 32
 
 state 47
 
-    (26) comparison -> factor GREATER . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (23) comparison -> factor EQUALS . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 64
-
-state 48
-
-    (27) comparison -> factor GREATEREQUAL . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 65
-
-state 49
-
-    (28) comparison -> factor LESSEQUAL . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
-
-    factor                         shift and go to state 66
-
-state 50
-
-    (16) sentence -> FOR ID IN . factor DOT DOT factor instruction END
-    (17) sentence -> FOR ID IN . ID instruction END
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
-
-    ID              shift and go to state 67
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
     factor                         shift and go to state 68
 
+state 48
+
+    (24) comparison -> factor DIFFERENT . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 69
+
+state 49
+
+    (25) comparison -> factor LESS . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 70
+
+state 50
+
+    (26) comparison -> factor GREATER . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 71
+
 state 51
+
+    (27) comparison -> factor GREATEREQUAL . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 72
+
+state 52
+
+    (28) comparison -> factor LESSEQUAL . factor
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 73
+
+state 53
+
+    (16) sentence -> FOR ID IN . factor DOT DOT factor instruction END
+    (17) sentence -> FOR ID IN . ID instruction END
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    ID              shift and go to state 74
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 75
+
+state 54
 
     (29) assignment -> ID ASSIGN expression .
     (7) expression -> expression . ADD term
@@ -1444,45 +1568,69 @@ state 51
     END             reduce using rule 29 (assignment -> ID ASSIGN expression .)
     ELSE            reduce using rule 29 (assignment -> ID ASSIGN expression .)
     ELSIF           reduce using rule 29 (assignment -> ID ASSIGN expression .)
-    ADD             shift and go to state 21
-    SUBSTRACT       shift and go to state 22
+    ADD             shift and go to state 22
+    SUBSTRACT       shift and go to state 23
 
 
-state 52
+state 55
 
     (32) assignment -> ID ASSIGN LBRACKET . factor COMMA factor COMMA factor COMMA factor RBRACKET
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    factor                         shift and go to state 69
+    factor                         shift and go to state 76
 
-state 53
+state 56
+
+    (34) assignment -> ID DOT LENGTH .
+
+    $end            reduce using rule 34 (assignment -> ID DOT LENGTH .)
+    END             reduce using rule 34 (assignment -> ID DOT LENGTH .)
+    ELSE            reduce using rule 34 (assignment -> ID DOT LENGTH .)
+    ELSIF           reduce using rule 34 (assignment -> ID DOT LENGTH .)
+
+
+state 57
+
+    (35) assignment -> ID DOT INSERT . LPAREN factor COMMA factor RPAREN
+
+    LPAREN          shift and go to state 77
+
+
+state 58
+
+    (36) assignment -> ID DOT PUSH . LPAREN factor RPAREN
+
+    LPAREN          shift and go to state 78
+
+
+state 59
 
     (18) sentence -> IF comparison instruction . END
     (21) sentence -> IF comparison instruction . ELSE instruction END
     (22) sentence -> IF comparison instruction . ELSIF instruction ELSE instruction END
 
-    END             shift and go to state 70
-    ELSE            shift and go to state 71
-    ELSIF           shift and go to state 72
+    END             shift and go to state 79
+    ELSE            shift and go to state 80
+    ELSIF           shift and go to state 81
 
 
-state 54
+state 60
 
     (19) sentence -> IF comparison OR . comparison instruction END
     (23) comparison -> . factor EQUALS factor
@@ -1491,28 +1639,28 @@ state 54
     (26) comparison -> . factor GREATER factor
     (27) comparison -> . factor GREATEREQUAL factor
     (28) comparison -> . factor LESSEQUAL factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    comparison                     shift and go to state 73
-    factor                         shift and go to state 31
+    comparison                     shift and go to state 82
+    factor                         shift and go to state 32
 
-state 55
+state 61
 
     (20) sentence -> IF comparison AND . comparison instruction END
     (23) comparison -> . factor EQUALS factor
@@ -1521,28 +1669,28 @@ state 55
     (26) comparison -> . factor GREATER factor
     (27) comparison -> . factor GREATEREQUAL factor
     (28) comparison -> . factor LESSEQUAL factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    comparison                     shift and go to state 74
-    factor                         shift and go to state 31
+    comparison                     shift and go to state 83
+    factor                         shift and go to state 32
 
-state 56
+state 62
 
     (30) assignment -> GLOBALID ASSIGN expression .
     (7) expression -> expression . ADD term
@@ -1552,11 +1700,11 @@ state 56
     END             reduce using rule 30 (assignment -> GLOBALID ASSIGN expression .)
     ELSE            reduce using rule 30 (assignment -> GLOBALID ASSIGN expression .)
     ELSIF           reduce using rule 30 (assignment -> GLOBALID ASSIGN expression .)
-    ADD             shift and go to state 21
-    SUBSTRACT       shift and go to state 22
+    ADD             shift and go to state 22
+    SUBSTRACT       shift and go to state 23
 
 
-state 57
+state 63
 
     (31) assignment -> INSTANCEID ASSIGN expression .
     (7) expression -> expression . ADD term
@@ -1566,32 +1714,39 @@ state 57
     END             reduce using rule 31 (assignment -> INSTANCEID ASSIGN expression .)
     ELSE            reduce using rule 31 (assignment -> INSTANCEID ASSIGN expression .)
     ELSIF           reduce using rule 31 (assignment -> INSTANCEID ASSIGN expression .)
-    ADD             shift and go to state 21
-    SUBSTRACT       shift and go to state 22
+    ADD             shift and go to state 22
+    SUBSTRACT       shift and go to state 23
 
 
-state 58
+state 64
+
+    (33) assignment -> DEF ID instruction . END
+
+    END             shift and go to state 84
+
+
+state 65
 
     (13) sentence -> WHILE comparison DO instruction . END
 
-    END             shift and go to state 75
+    END             shift and go to state 85
 
 
-state 59
+state 66
 
     (14) sentence -> WHILE comparison OR comparison . DO instruction END
 
-    DO              shift and go to state 76
+    DO              shift and go to state 86
 
 
-state 60
+state 67
 
     (15) sentence -> WHILE comparison AND comparison . DO instruction END
 
-    DO              shift and go to state 77
+    DO              shift and go to state 87
 
 
-state 61
+state 68
 
     (23) comparison -> factor EQUALS factor .
 
@@ -1606,6 +1761,7 @@ state 61
     ID              reduce using rule 23 (comparison -> factor EQUALS factor .)
     GLOBALID        reduce using rule 23 (comparison -> factor EQUALS factor .)
     INSTANCEID      reduce using rule 23 (comparison -> factor EQUALS factor .)
+    DEF             reduce using rule 23 (comparison -> factor EQUALS factor .)
     INTEGER         reduce using rule 23 (comparison -> factor EQUALS factor .)
     FLOAT           reduce using rule 23 (comparison -> factor EQUALS factor .)
     STRING          reduce using rule 23 (comparison -> factor EQUALS factor .)
@@ -1613,7 +1769,7 @@ state 61
     TRUE            reduce using rule 23 (comparison -> factor EQUALS factor .)
 
 
-state 62
+state 69
 
     (24) comparison -> factor DIFFERENT factor .
 
@@ -1628,6 +1784,7 @@ state 62
     ID              reduce using rule 24 (comparison -> factor DIFFERENT factor .)
     GLOBALID        reduce using rule 24 (comparison -> factor DIFFERENT factor .)
     INSTANCEID      reduce using rule 24 (comparison -> factor DIFFERENT factor .)
+    DEF             reduce using rule 24 (comparison -> factor DIFFERENT factor .)
     INTEGER         reduce using rule 24 (comparison -> factor DIFFERENT factor .)
     FLOAT           reduce using rule 24 (comparison -> factor DIFFERENT factor .)
     STRING          reduce using rule 24 (comparison -> factor DIFFERENT factor .)
@@ -1635,7 +1792,7 @@ state 62
     TRUE            reduce using rule 24 (comparison -> factor DIFFERENT factor .)
 
 
-state 63
+state 70
 
     (25) comparison -> factor LESS factor .
 
@@ -1650,6 +1807,7 @@ state 63
     ID              reduce using rule 25 (comparison -> factor LESS factor .)
     GLOBALID        reduce using rule 25 (comparison -> factor LESS factor .)
     INSTANCEID      reduce using rule 25 (comparison -> factor LESS factor .)
+    DEF             reduce using rule 25 (comparison -> factor LESS factor .)
     INTEGER         reduce using rule 25 (comparison -> factor LESS factor .)
     FLOAT           reduce using rule 25 (comparison -> factor LESS factor .)
     STRING          reduce using rule 25 (comparison -> factor LESS factor .)
@@ -1657,7 +1815,7 @@ state 63
     TRUE            reduce using rule 25 (comparison -> factor LESS factor .)
 
 
-state 64
+state 71
 
     (26) comparison -> factor GREATER factor .
 
@@ -1672,6 +1830,7 @@ state 64
     ID              reduce using rule 26 (comparison -> factor GREATER factor .)
     GLOBALID        reduce using rule 26 (comparison -> factor GREATER factor .)
     INSTANCEID      reduce using rule 26 (comparison -> factor GREATER factor .)
+    DEF             reduce using rule 26 (comparison -> factor GREATER factor .)
     INTEGER         reduce using rule 26 (comparison -> factor GREATER factor .)
     FLOAT           reduce using rule 26 (comparison -> factor GREATER factor .)
     STRING          reduce using rule 26 (comparison -> factor GREATER factor .)
@@ -1679,7 +1838,7 @@ state 64
     TRUE            reduce using rule 26 (comparison -> factor GREATER factor .)
 
 
-state 65
+state 72
 
     (27) comparison -> factor GREATEREQUAL factor .
 
@@ -1694,6 +1853,7 @@ state 65
     ID              reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
     GLOBALID        reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
     INSTANCEID      reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
+    DEF             reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
     INTEGER         reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
     FLOAT           reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
     STRING          reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
@@ -1701,7 +1861,7 @@ state 65
     TRUE            reduce using rule 27 (comparison -> factor GREATEREQUAL factor .)
 
 
-state 66
+state 73
 
     (28) comparison -> factor LESSEQUAL factor .
 
@@ -1716,6 +1876,7 @@ state 66
     ID              reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
     GLOBALID        reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
     INSTANCEID      reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
+    DEF             reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
     INTEGER         reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
     FLOAT           reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
     STRING          reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
@@ -1723,10 +1884,10 @@ state 66
     TRUE            reduce using rule 28 (comparison -> factor LESSEQUAL factor .)
 
 
-state 67
+state 74
 
     (17) sentence -> FOR ID IN ID . instruction END
-    (36) factor -> ID .
+    (40) factor -> ID .
     (1) instruction -> . imprint
     (2) instruction -> . expression
     (3) instruction -> . sentence
@@ -1750,19 +1911,23 @@ state 67
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    DOT             reduce using rule 36 (factor -> ID .)
+    DOT             reduce using rule 40 (factor -> ID .)
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
     WHILE           shift and go to state 9
@@ -1771,13 +1936,14 @@ state 67
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 78
+    instruction                    shift and go to state 88
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -1785,21 +1951,67 @@ state 67
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 68
+state 75
 
     (16) sentence -> FOR ID IN factor . DOT DOT factor instruction END
 
-    DOT             shift and go to state 79
+    DOT             shift and go to state 89
 
 
-state 69
+state 76
 
     (32) assignment -> ID ASSIGN LBRACKET factor . COMMA factor COMMA factor COMMA factor RBRACKET
 
-    COMMA           shift and go to state 80
+    COMMA           shift and go to state 90
 
 
-state 70
+state 77
+
+    (35) assignment -> ID DOT INSERT LPAREN . factor COMMA factor RPAREN
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 91
+
+state 78
+
+    (36) assignment -> ID DOT PUSH LPAREN . factor RPAREN
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 92
+
+state 79
 
     (18) sentence -> IF comparison instruction END .
 
@@ -1809,7 +2021,7 @@ state 70
     ELSIF           reduce using rule 18 (sentence -> IF comparison instruction END .)
 
 
-state 71
+state 80
 
     (21) sentence -> IF comparison instruction ELSE . instruction END
     (1) instruction -> . imprint
@@ -1835,17 +2047,21 @@ state 71
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -1855,13 +2071,14 @@ state 71
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 81
+    instruction                    shift and go to state 93
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -1869,7 +2086,7 @@ state 71
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 72
+state 81
 
     (22) sentence -> IF comparison instruction ELSIF . instruction ELSE instruction END
     (1) instruction -> . imprint
@@ -1895,17 +2112,21 @@ state 72
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -1915,13 +2136,14 @@ state 72
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 82
+    instruction                    shift and go to state 94
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -1929,7 +2151,7 @@ state 72
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 73
+state 82
 
     (19) sentence -> IF comparison OR comparison . instruction END
     (1) instruction -> . imprint
@@ -1955,17 +2177,21 @@ state 73
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -1975,13 +2201,14 @@ state 73
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 83
+    instruction                    shift and go to state 95
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -1989,7 +2216,7 @@ state 73
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 74
+state 83
 
     (20) sentence -> IF comparison AND comparison . instruction END
     (1) instruction -> . imprint
@@ -2015,17 +2242,21 @@ state 74
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -2035,13 +2266,14 @@ state 74
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 84
+    instruction                    shift and go to state 96
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -2049,7 +2281,17 @@ state 74
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 75
+state 84
+
+    (33) assignment -> DEF ID instruction END .
+
+    $end            reduce using rule 33 (assignment -> DEF ID instruction END .)
+    END             reduce using rule 33 (assignment -> DEF ID instruction END .)
+    ELSE            reduce using rule 33 (assignment -> DEF ID instruction END .)
+    ELSIF           reduce using rule 33 (assignment -> DEF ID instruction END .)
+
+
+state 85
 
     (13) sentence -> WHILE comparison DO instruction END .
 
@@ -2059,7 +2301,7 @@ state 75
     ELSIF           reduce using rule 13 (sentence -> WHILE comparison DO instruction END .)
 
 
-state 76
+state 86
 
     (14) sentence -> WHILE comparison OR comparison DO . instruction END
     (1) instruction -> . imprint
@@ -2085,17 +2327,21 @@ state 76
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -2105,13 +2351,14 @@ state 76
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 85
+    instruction                    shift and go to state 97
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -2119,7 +2366,7 @@ state 76
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 77
+state 87
 
     (15) sentence -> WHILE comparison AND comparison DO . instruction END
     (1) instruction -> . imprint
@@ -2145,17 +2392,21 @@ state 77
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -2165,13 +2416,14 @@ state 77
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 86
+    instruction                    shift and go to state 98
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -2179,86 +2431,100 @@ state 77
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 78
+state 88
 
     (17) sentence -> FOR ID IN ID instruction . END
 
-    END             shift and go to state 87
+    END             shift and go to state 99
 
 
-state 79
+state 89
 
     (16) sentence -> FOR ID IN factor DOT . DOT factor instruction END
 
-    DOT             shift and go to state 88
+    DOT             shift and go to state 100
 
 
-state 80
+state 90
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA . factor COMMA factor COMMA factor RBRACKET
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    factor                         shift and go to state 89
+    factor                         shift and go to state 101
 
-state 81
+state 91
+
+    (35) assignment -> ID DOT INSERT LPAREN factor . COMMA factor RPAREN
+
+    COMMA           shift and go to state 102
+
+
+state 92
+
+    (36) assignment -> ID DOT PUSH LPAREN factor . RPAREN
+
+    RPAREN          shift and go to state 103
+
+
+state 93
 
     (21) sentence -> IF comparison instruction ELSE instruction . END
 
-    END             shift and go to state 90
+    END             shift and go to state 104
 
 
-state 82
+state 94
 
     (22) sentence -> IF comparison instruction ELSIF instruction . ELSE instruction END
 
-    ELSE            shift and go to state 91
+    ELSE            shift and go to state 105
 
 
-state 83
+state 95
 
     (19) sentence -> IF comparison OR comparison instruction . END
 
-    END             shift and go to state 92
+    END             shift and go to state 106
 
 
-state 84
+state 96
 
     (20) sentence -> IF comparison AND comparison instruction . END
 
-    END             shift and go to state 93
+    END             shift and go to state 107
 
 
-state 85
+state 97
 
     (14) sentence -> WHILE comparison OR comparison DO instruction . END
 
-    END             shift and go to state 94
+    END             shift and go to state 108
 
 
-state 86
+state 98
 
     (15) sentence -> WHILE comparison AND comparison DO instruction . END
 
-    END             shift and go to state 95
+    END             shift and go to state 109
 
 
-state 87
+state 99
 
     (17) sentence -> FOR ID IN ID instruction END .
 
@@ -2268,37 +2534,70 @@ state 87
     ELSIF           reduce using rule 17 (sentence -> FOR ID IN ID instruction END .)
 
 
-state 88
+state 100
 
     (16) sentence -> FOR ID IN factor DOT DOT . factor instruction END
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    factor                         shift and go to state 96
+    factor                         shift and go to state 110
 
-state 89
+state 101
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA factor . COMMA factor COMMA factor RBRACKET
 
-    COMMA           shift and go to state 97
+    COMMA           shift and go to state 111
 
 
-state 90
+state 102
+
+    (35) assignment -> ID DOT INSERT LPAREN factor COMMA . factor RPAREN
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
+
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
+
+    factor                         shift and go to state 112
+
+state 103
+
+    (36) assignment -> ID DOT PUSH LPAREN factor RPAREN .
+
+    $end            reduce using rule 36 (assignment -> ID DOT PUSH LPAREN factor RPAREN .)
+    END             reduce using rule 36 (assignment -> ID DOT PUSH LPAREN factor RPAREN .)
+    ELSE            reduce using rule 36 (assignment -> ID DOT PUSH LPAREN factor RPAREN .)
+    ELSIF           reduce using rule 36 (assignment -> ID DOT PUSH LPAREN factor RPAREN .)
+
+
+state 104
 
     (21) sentence -> IF comparison instruction ELSE instruction END .
 
@@ -2308,7 +2607,7 @@ state 90
     ELSIF           reduce using rule 21 (sentence -> IF comparison instruction ELSE instruction END .)
 
 
-state 91
+state 105
 
     (22) sentence -> IF comparison instruction ELSIF instruction ELSE . instruction END
     (1) instruction -> . imprint
@@ -2334,17 +2633,21 @@ state 91
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -2354,13 +2657,14 @@ state 91
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    instruction                    shift and go to state 98
+    instruction                    shift and go to state 113
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
@@ -2368,7 +2672,7 @@ state 91
     term                           shift and go to state 8
     factor                         shift and go to state 12
 
-state 92
+state 106
 
     (19) sentence -> IF comparison OR comparison instruction END .
 
@@ -2378,7 +2682,7 @@ state 92
     ELSIF           reduce using rule 19 (sentence -> IF comparison OR comparison instruction END .)
 
 
-state 93
+state 107
 
     (20) sentence -> IF comparison AND comparison instruction END .
 
@@ -2388,7 +2692,7 @@ state 93
     ELSIF           reduce using rule 20 (sentence -> IF comparison AND comparison instruction END .)
 
 
-state 94
+state 108
 
     (14) sentence -> WHILE comparison OR comparison DO instruction END .
 
@@ -2398,7 +2702,7 @@ state 94
     ELSIF           reduce using rule 14 (sentence -> WHILE comparison OR comparison DO instruction END .)
 
 
-state 95
+state 109
 
     (15) sentence -> WHILE comparison AND comparison DO instruction END .
 
@@ -2408,7 +2712,7 @@ state 95
     ELSIF           reduce using rule 15 (sentence -> WHILE comparison AND comparison DO instruction END .)
 
 
-state 96
+state 110
 
     (16) sentence -> FOR ID IN factor DOT DOT factor . instruction END
     (1) instruction -> . imprint
@@ -2434,17 +2738,21 @@ state 96
     (30) assignment -> . GLOBALID ASSIGN expression
     (31) assignment -> . INSTANCEID ASSIGN expression
     (32) assignment -> . ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+    (33) assignment -> . DEF ID instruction END
+    (34) assignment -> . ID DOT LENGTH
+    (35) assignment -> . ID DOT INSERT LPAREN factor COMMA factor RPAREN
+    (36) assignment -> . ID DOT PUSH LPAREN factor RPAREN
     (10) term -> . term MULTIPLY factor
     (11) term -> . term DIVIDE factor
     (12) term -> . factor
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
     PRINT           shift and go to state 6
     PUTS            shift and go to state 7
@@ -2454,65 +2762,83 @@ state 96
     ID              shift and go to state 11
     GLOBALID        shift and go to state 14
     INSTANCEID      shift and go to state 15
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    DEF             shift and go to state 16
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
     factor                         shift and go to state 12
-    instruction                    shift and go to state 99
+    instruction                    shift and go to state 114
     imprint                        shift and go to state 2
     expression                     shift and go to state 3
     sentence                       shift and go to state 4
     assignment                     shift and go to state 5
     term                           shift and go to state 8
 
-state 97
+state 111
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA factor COMMA . factor COMMA factor RBRACKET
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    factor                         shift and go to state 100
+    factor                         shift and go to state 115
 
-state 98
+state 112
+
+    (35) assignment -> ID DOT INSERT LPAREN factor COMMA factor . RPAREN
+
+    RPAREN          shift and go to state 116
+
+
+state 113
 
     (22) sentence -> IF comparison instruction ELSIF instruction ELSE instruction . END
 
-    END             shift and go to state 101
+    END             shift and go to state 117
 
 
-state 99
+state 114
 
     (16) sentence -> FOR ID IN factor DOT DOT factor instruction . END
 
-    END             shift and go to state 102
+    END             shift and go to state 118
 
 
-state 100
+state 115
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA factor COMMA factor . COMMA factor RBRACKET
 
-    COMMA           shift and go to state 103
+    COMMA           shift and go to state 119
 
 
-state 101
+state 116
+
+    (35) assignment -> ID DOT INSERT LPAREN factor COMMA factor RPAREN .
+
+    $end            reduce using rule 35 (assignment -> ID DOT INSERT LPAREN factor COMMA factor RPAREN .)
+    END             reduce using rule 35 (assignment -> ID DOT INSERT LPAREN factor COMMA factor RPAREN .)
+    ELSE            reduce using rule 35 (assignment -> ID DOT INSERT LPAREN factor COMMA factor RPAREN .)
+    ELSIF           reduce using rule 35 (assignment -> ID DOT INSERT LPAREN factor COMMA factor RPAREN .)
+
+
+state 117
 
     (22) sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .
 
@@ -2522,7 +2848,7 @@ state 101
     ELSIF           reduce using rule 22 (sentence -> IF comparison instruction ELSIF instruction ELSE instruction END .)
 
 
-state 102
+state 118
 
     (16) sentence -> FOR ID IN factor DOT DOT factor instruction END .
 
@@ -2532,37 +2858,37 @@ state 102
     ELSIF           reduce using rule 16 (sentence -> FOR ID IN factor DOT DOT factor instruction END .)
 
 
-state 103
+state 119
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA . factor RBRACKET
-    (33) factor -> . INTEGER
-    (34) factor -> . FLOAT
-    (35) factor -> . STRING
-    (36) factor -> . ID
-    (37) factor -> . GLOBALID
-    (38) factor -> . INSTANCEID
-    (39) factor -> . FALSE
-    (40) factor -> . TRUE
+    (37) factor -> . INTEGER
+    (38) factor -> . FLOAT
+    (39) factor -> . STRING
+    (40) factor -> . ID
+    (41) factor -> . GLOBALID
+    (42) factor -> . INSTANCEID
+    (43) factor -> . FALSE
+    (44) factor -> . TRUE
 
-    INTEGER         shift and go to state 16
-    FLOAT           shift and go to state 17
-    STRING          shift and go to state 18
-    ID              shift and go to state 24
-    GLOBALID        shift and go to state 25
-    INSTANCEID      shift and go to state 26
-    FALSE           shift and go to state 19
-    TRUE            shift and go to state 20
+    INTEGER         shift and go to state 17
+    FLOAT           shift and go to state 18
+    STRING          shift and go to state 19
+    ID              shift and go to state 25
+    GLOBALID        shift and go to state 26
+    INSTANCEID      shift and go to state 27
+    FALSE           shift and go to state 20
+    TRUE            shift and go to state 21
 
-    factor                         shift and go to state 104
+    factor                         shift and go to state 120
 
-state 104
+state 120
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor . RBRACKET
 
-    RBRACKET        shift and go to state 105
+    RBRACKET        shift and go to state 121
 
 
-state 105
+state 121
 
     (32) assignment -> ID ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET .
 

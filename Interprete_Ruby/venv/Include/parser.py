@@ -1,6 +1,7 @@
 import ply.yacc as yacc
-from lexer import tokens
-
+from lexer import tokens, lexer
+checked = True
+parser_rules = []
 #Manuel: Se definió los tipos de instrucciones que contendrá el cuerpo del código
 def p_instruction(p):
     """instruction : imprint
@@ -82,23 +83,65 @@ def p_factor(p):
                 | INSTANCEID
                 | FALSE
                 | TRUE"""
+# Manuel: Nueva regla, casos en que se ingresan sentencias vacías
+def p_empty(p):
+    "empty :"
+    pass
 
 # Regla de error para errores de sintaxis
 def p_error(p):
-    if p:
-        print("Syntax error at token", p.type)
-        # Just discard the token and tell the parser it's okay.
-    else:
-        print("Syntax error at EOF")
+    if p is not None:
+        parser_rules.append("Syntax Error")
 
-# Contrucción del parser
+    else:
+        print("Syntax Error!!")
+        parser_rules.append("Syntax Error")  # añade el error a el arreglo
+
+# Manuel: Se procede a construir el parser
 parser = yacc.yacc()
 
+def p_empty(p):
+    "empty :"
+    pass
+
+
+# Build the parser
+parser = yacc.yacc()
+
+#Manuel: Creación de código ejemplo para el parser.py
+example_code = """
+def main (a)
+    saludo = 'Hola'
+    if saludo == 'Hola'
+        saludo = 'Hola Mundo!'
+    end
+end
+"""
+
+lexer.input(example_code)
+# Tokenize
 while True:
-    try:
-        s = input('parser > ')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
-    print(result)
+    tok = lexer.token()
+    if not tok:
+        break  # No more input
+    print(tok)
+print("\n")
+
+lexer.lineno = 0
+
+#Manuel: Ejecución de ejemplo con el parse.py
+parser.parse(example_code)
+
+if checked:
+    print("¡El código es válido!")
+else:
+    print("¡El código no es válido!")
+
+# funcion del analizador
+
+def analizarSintactico(s):
+    parser_rules.clear()  # limpio los errores
+    print(s)
+    parser_result = str(parser.parse(s))
+    print(parser_result)
+    return parser_result, parser_rules

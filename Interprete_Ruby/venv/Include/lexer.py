@@ -1,5 +1,5 @@
 import ply.lex as lex
-
+reglas = []
 reserved = {
     'puts': 'PUTS',
     'print': 'PRINT',
@@ -62,8 +62,8 @@ tokens = (
     'BLOCKCOMMENT',
     'DOT',
     'GREATEREQUAL',
-    'LESSEQUAL'
-) + tuple(reserved.values())
+    'LESSEQUAL',
+) + tuple(reserved.values()) + tuple(array_methods.values())
 
 # Manuel: Se definió nuevas expresiones regulares para tokens simples
 t_ADD = r'\+'
@@ -132,26 +132,24 @@ t_ignore = ' \t'
 
 #Reconocimiento de errores
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("No se ha reconocido '%s'" % t.value[0])
+    if t is not None:
+        reglas.append("Error, no se pudo encontrar el token '%s'" % t.value[0])
+    else:
+        print("Error de sintáxis")
+        reglas.append("Syntax Error")  # añade el error a el arreglo
     t.lexer.skip(1)
-
-#Obtener los tokens del Lexer
-def getTokens(lexer):
-    while True:
-        tok = lexer.token()
-        if not tok:
-            break  # No more input
-        print(tok)
 
 lexer = lex.lex()
 
-"""
-linea=" "
-while linea!="":
-    linea=input(">>")
-    lexer.input(linea)
-    getTokens(lexer)
-
-print("Succesfull")
-
-"""
+def analizarLexico(data):
+    reglas.clear()  # limpio los errores
+    lexer.input(data)
+    resultados = ""
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        resultado = str(tok) + "\n"
+        resultados = resultados + resultado
+    return resultados, reglas
