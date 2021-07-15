@@ -1,7 +1,6 @@
 import ply.yacc as yacc
-from lexer import tokens, lexer
-checked = True
-parser_rules = []
+from lexer import tokens, find_warning, build_lexer, lex_analyzer
+from verificator import verificator
 #Manuel: Se definió los tipos de instrucciones que contendrá el cuerpo del código
 def p_instruction(p):
     """instruction : imprint
@@ -106,60 +105,22 @@ def p_empty(p):
     "empty :"
     pass
 
-# Regla de error para errores de sintaxis
+# Manuel: Regla de sintáxis para errores del parser
 def p_error(p):
     if p is not None:
-        parser_rules.append("Syntax Error")
-
+        line = find_warning(verificator.code, p)
+        verificator.yacc_error+=1
+        verificator.data_yacc_error+=f"Se encontró un error de sintáxis en la línea {p.lineno}\n"
+        print(f"Se encontró un error de sintáxis en la línea {p.lineno}\n")
     else:
-        print("Syntax Error!!")
-        parser_rules.append("Syntax Error")  # añade el error a el arreglo
+        verificator.data_yacc_error = "Syntax error at EOF"
+        print("Syntax error at EOF")
 
-# Manuel: Se procede a construir el parser
-parser = yacc.yacc()
-
-#def p_empty(p):
-#    "empty :"
-#    pass
-
-
-# Build the parser
-#parser = yacc.yacc()
-
-#Manuel: Creación de código ejemplo para el parser.py
-example_code = """
-def main (a)
-    saludo = 'Hola'
-    if saludo == 'Hola'
-        saludo = 'Hola Mundo!'
-    end
-end
-"""
-
-lexer.input(example_code)
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    print(tok)
-print("\n")
-
-lexer.lineno = 0
-
-#Manuel: Ejecución de ejemplo con el parse.py
-parser.parse(example_code)
-
-if checked:
-    print("¡El código es válido!")
-else:
-    print("¡El código no es válido!")
-
-# funcion del analizador
-
-def analizarSintactico(s):
-    parser_rules.clear()  # limpio los errores
-    print(s)
-    parser_result = str(parser.parse(s))
-    print(parser_result)
-    return parser_result, parser_rules
+#Manuel: Construir el parser
+def yacc_analyzer(data):
+    verificator()
+    build_lexer()
+    parser = yacc.yacc(start="sentences")
+    verificator.code = data
+    parser.parse(data)
+    return verificator
