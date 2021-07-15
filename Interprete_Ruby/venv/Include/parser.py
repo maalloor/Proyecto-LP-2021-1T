@@ -56,16 +56,19 @@ def p_assigment(p):
 
 #David: Se separa la declaracion de un array para asignarle sus funciones
 def p_array(p):
-   """array: array ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
-          | array ASSIGN LBRACKET RBRACKET
-          | array ASSIGN QUEUE DOT NEW"""
+   """array : arrays ASSIGN LBRACKET factor COMMA factor COMMA factor COMMA factor RBRACKET
+            | arrays ASSIGN LBRACKET RBRACKET
+            | arrays ASSIGN QUEUE DOT NEW"""
+
+
+def p_arrays(p):
+    """arrays : STRING
+              | ID"""
 
 # David: Se definió el formato de la declaracion de una funcion
 def p_funcion(p):
     "assignment : DEF ID instruction END"
 
-
-# David: Se definió el metodo length de array
 def p_funcion_length(p):
     "assignment : array DOT LENGTH"
 
@@ -86,6 +89,8 @@ def p_funcion_push(p):
 #David: funcion pop para pilas
 def p_funcion_pop(p):
     "assignment : array DOT POP "
+
+# David: Se definió el metodo length de array
 
 def p_factor(p):
     """factor : INTEGER
@@ -113,13 +118,13 @@ def p_error(p):
 # Manuel: Se procede a construir el parser
 parser = yacc.yacc()
 
-def p_empty(p):
-    "empty :"
-    pass
+#def p_empty(p):
+#    "empty :"
+#    pass
 
 
 # Build the parser
-parser = yacc.yacc()
+#parser = yacc.yacc()
 
 #Manuel: Creación de código ejemplo para el parser.py
 example_code = """
