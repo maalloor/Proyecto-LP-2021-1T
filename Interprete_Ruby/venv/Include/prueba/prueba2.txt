@@ -1,0 +1,5 @@
+# Se necesita encontrar el factorial de n. En teoria este ejemplo no tiene errores lexicos ni sintacticos
+def factorial(n)
+  if n == 0 return 1 end
+  return n * factorial(n-1)
+end

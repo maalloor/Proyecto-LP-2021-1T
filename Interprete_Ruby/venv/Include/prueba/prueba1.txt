@@ -1,0 +1,4 @@
+# Este ejemplo no devolverá errores léxicos ni sintácticos
+def main()
+  print 'Hola, somos de la materia de Lenguajes de Programacion'
+end

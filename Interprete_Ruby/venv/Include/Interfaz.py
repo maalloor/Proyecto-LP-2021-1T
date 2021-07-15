@@ -1,8 +1,35 @@
 import tkinter as tk
+import random as rd
+from lexer import lex_analyzer
+
+def evaluation(input, output):
+    index = rd.randint(1, 3)
+    with open(f'./prueba/prueba{index}.txt', encoding='utf-8') as file:
+        ejemplo = ''.join(file.readlines())
+        input.delete('1.0', tk.END)
+        input.insert(1.0, ejemplo)
+        output.config(state = tk.NORMAL)
+        output.delete('1.0', tk.END)
+        output.insert(1.0, "En este cuadro visualizará el resultado de su análisis.")
+        output.config(state = tk.DISABLED)
+
+def verificator_lex():
+    text = coding_input.get("1.0", "end-1c")
+    output = lex_analyzer(text)
+    text_error(output, "léxico")
+
+def text_error(output, type):
+    coding_output.config(state = tk.NORMAL)
+    coding_output.delete('1.0', tk.END)
+    if output != '':
+        coding_output.insert(1.0, output)
+    else:
+        coding_output.insert(1.0, f"No existen errores en el analizador {type}")
+    coding_output.config(state=tk.DISABLED)
 
 #Aporte Manuel Loor
 frame = tk.Tk()
-frame.geometry("1000x700")
+frame.geometry("1200x700")
 frame.title("Interpréte de Ruby")
 frame.resizable(True, True)
 frame.config(bg="#000")
@@ -27,8 +54,8 @@ coding_output.insert(2.0, "-> Resultados del análisis realizado")
 coding_output.config(state="disabled")
 coding_output.place(x=615, y=160)
 
-open_file = tk.Button(frame, text="Abrir Archivo", bg='#FFF', fg='black', padx=10, pady=2)
-lexer = tk.Button(frame, text="Analizador Léxico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10)
+open_file = tk.Button(frame, text="Abrir Archivo", bg='#FFF', fg='black', padx=10, pady=2, command=lambda: evaluation(coding_input,  coding_output))
+lexer = tk.Button(frame, text="Analizador Léxico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10, command=verificator_lex)
 parser = tk.Button(frame, text="Analizador Sintáctico", bg='#FFF', fg='black', compound=tk.LEFT, padx=10, pady=10)
 
 open_file.place(x=240, y=560)

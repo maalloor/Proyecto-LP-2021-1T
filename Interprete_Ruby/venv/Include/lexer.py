@@ -1,5 +1,6 @@
 import ply.lex as lex
-reglas = []
+from verificator import verificator
+
 reserved = {
     'puts': 'PUTS',
     'print': 'PRINT',
@@ -25,7 +26,10 @@ reserved = {
     'end': 'END',
     'def': 'DEF',
     'new': 'NEW',
-    'Queue': 'QUEUE'
+    'Queue': 'QUEUE',
+    'to_i': 'TOI',
+    'to_s': 'TOS',
+    'to_f': 'TOF'
 }
 
 #David: Se definio diccionario de metodos de la estructura de control
@@ -120,11 +124,11 @@ def t_INSTANCEID(t):
 
 def t_COMMENT(t):
     r'\#.*'
-    return t
+    pass
 
 def t_BLOCKCOMMENT(t):
     r'=begin(.|\n)*=end'
-    return t
+    pass
 
 #Definición y conteo del número de línea
 def t_newline(t):
@@ -133,26 +137,32 @@ def t_newline(t):
 #Reconocimiento de tabulación
 t_ignore = ' \t'
 
+#Manuel: Reconocimiento de error
+def find_warning(input, token):
+    start_line = input.rfind("\n",0,token.lexpos) + 1
+    return (token.lexpos - start_line) + 1
+
 #Reconocimiento de errores
 def t_error(t):
-    print("No se ha reconocido '%s'" % t.value[0])
-    if t is not None:
-        reglas.append("Error, no se pudo encontrar el token '%s'" % t.value[0])
-    else:
-        print("Error de sintáxis")
-        reglas.append("Syntax Error")  # añade el error a el arreglo
+    line = find_warning(verificator.code, t)
+    verificator.data_lex_error = f"El carácter {t.value[0]} es inválido. Se encuentra en la línea {t.lineno}"
+    verificator.lex_error+=1
+    print(f"El carácter {t.value[0]} es inválido. Se encuentra en la línea {t.lineno}")
     t.lexer.skip(1)
 
 lexer = lex.lex()
 
-def analizarLexico(data):
-    reglas.clear()  # limpio los errores
+def build_lexer():
+    verificator.lex = lex.lex()
+
+def lex_analyzer(data):
+    verificator()
+    build_lexer()
+    verificator.code = data
+    lexer = verificator.lex
     lexer.input(data)
-    resultados = ""
     while True:
         tok = lexer.token()
         if not tok:
             break
-        resultado = str(tok) + "\n"
-        resultados = resultados + resultado
-    return resultados, reglas
+    return verificator.data_lex_error
